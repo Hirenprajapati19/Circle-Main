@@ -1,0 +1,40 @@
+{
+  "mockStatuses": [
+    {
+      "id": 1,
+      "user": {
+        "name": "Alice Johnson",
+        "avatar": null
+      },
+      "type": "text",
+      "content": "Just finished an amazing workout! 💪",
+      "timestamp": "2025-01-14T08:30:00Z",
+      "views": 23,
+      "likes": 8
+    },
+    {
+      "id": 2,
+      "user": {
+        "name": "Bob Smith",
+        "avatar": null
+      },
+      "type": "image",
+      "content": "Beautiful sunset from my office window",
+      "timestamp": "2025-01-13T18:45:00Z",
+      "views": 45,
+      "likes": 15
+    },
+    {
+      "id": 3,
+      "user": {
+        "name": "Carol Williams",
+        "avatar": null
+      },
+      "type": "text",
+      "content": "Excited about the new project launch! 🚀",
+      "timestamp": "2025-01-13T14:20:00Z",
+      "views": 67,
+      "likes": 22
+    }
+  ]
+}

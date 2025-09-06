@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-gray-200;
+  }
+  body {
+    @apply bg-white text-gray-900 font-inter;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/60 backdrop-blur-md border border-el-blue-400/30;
+  }
+  
+  .btn-primary {
+    @apply bg-el-blue-500 hover:bg-el-blue-600 text-white px-6 py-3 rounded-2xl font-medium transition-all duration-200 hover:shadow-el-glow;
+  }
+  
+  .btn-secondary {
+    @apply bg-white border-2 border-el-blue-500 text-el-blue-500 hover:bg-el-blue-50 px-6 py-3 rounded-2xl font-medium transition-all duration-200;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 rounded-2xl border border-gray-300 focus:border-el-blue-500 focus:ring-4 focus:ring-el-blue-500/20 transition-all duration-200 outline-none;
+  }
+  
+  .card {
+    @apply bg-white rounded-2xl shadow-lg border border-gray-100 p-6;
+  }
+  
+  .glow-hover {
+    @apply hover:shadow-el-glow transition-shadow duration-300;
+  }
+}
