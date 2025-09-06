@@ -104,7 +104,8 @@ const ChatWindow = () => {
       {showCall && <CallBanner onClose={() => setShowCall(false)} />}
       
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-3 sm:px-6 py-3 sm:py-4 shadow-sm">
+      
+      <div className="bg-black border-b border-gray-800 px-3 sm:px-6 py-3 sm:py-4 shadow-sm">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
             {/* Back button for mobile */}
@@ -127,7 +128,7 @@ const ChatWindow = () => {
                 size="sm"
               />
               <div className="min-w-0 flex-1">
-                <h3 className="font-semibold text-gray-900 text-sm sm:text-base truncate">
+                <h3 className="font-semibold text-white text-sm sm:text-base truncate">
                   {chat.name}
                 </h3>
                 <p className="text-xs sm:text-sm text-gray-500 truncate">
@@ -172,7 +173,7 @@ const ChatWindow = () => {
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
+      <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 bg-black">
         {messages.length === 0 && (
           <div className="text-center text-gray-500 py-8">
             <p>No messages yet. Start the conversation!</p>

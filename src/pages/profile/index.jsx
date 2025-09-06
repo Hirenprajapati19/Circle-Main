@@ -45,23 +45,26 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="p-4 sm:p-6">
+    <div className="p-4 sm:p-6 bg-black">
       <div className="max-w-2xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-8 gap-4">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold font-poppins text-gray-900 mb-2">Profile</h1>
-            <p className="text-sm sm:text-base text-gray-600">Manage your personal information</p>
+            <h1 className="text-xl sm:text-2xl font-bold font-poppins text-red-600 mb-2">Profile</h1>
+            <p className="text-sm sm:text-base text-white">Manage your personal information</p>
           </div>
-          
+
           {!isEditing ? (
-            <Button onClick={() => setIsEditing(true)} className="flex items-center gap-2 text-sm">
+            <Button
+              onClick={() => setIsEditing(true)}
+              className="flex items-center gap-2 text-sm bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md"
+            >
               <Edit3 className="w-4 h-4" />
-              <span className="hidden sm:inline">Edit Profile</span>
-              <span className="sm:hidden">Edit</span>
+              <span>Edit Profile</span>
             </Button>
+
           ) : (
             <div className="flex gap-2">
-              <Button onClick={handleSave} className="flex items-center gap-2 text-sm">
+              <Button onClick={handleSave} className="flex items-center text-white gap-2 text-sm">
                 <Save className="w-4 h-4" />
                 Save
               </Button>
@@ -79,7 +82,7 @@ const ProfilePage = () => {
             <div className="relative inline-block">
               <Avatar size="xl" name={formData.name} />
               {isEditing && (
-                <button className="absolute bottom-0 right-0 w-8 h-8 bg-el-blue-500 text-white rounded-full flex items-center justify-center hover:bg-el-blue-600 transition-colors">
+                <button className="absolute bottom-0 right-0 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors">
                   <Camera className="w-4 h-4" />
                 </button>
               )}
@@ -90,7 +93,7 @@ const ProfilePage = () => {
             {/* Basic Information */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                <label className="block text-sm font-medium text-red-600 mb-2">Full Name</label>
                 {isEditing ? (
                   <Input
                     type="text"
@@ -99,12 +102,12 @@ const ProfilePage = () => {
                     onChange={handleChange}
                   />
                 ) : (
-                  <p className="text-gray-900 py-3 text-sm sm:text-base">{formData.name}</p>
+                  <p className="text-white py-3 text-sm sm:text-base">{formData.name}</p>
                 )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                <label className="block text-sm font-medium text-red-600 mb-2">Phone</label>
                 {isEditing ? (
                   <Input
                     type="tel"
@@ -113,29 +116,29 @@ const ProfilePage = () => {
                     onChange={handleChange}
                   />
                 ) : (
-                  <p className="text-gray-900 py-3 text-sm sm:text-base">{formData.phone}</p>
+                  <p className="text-white py-3 text-sm sm:text-base">{formData.phone}</p>
                 )}
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">About</label>
+              <label className="block text-sm font-medium text-red-600 mb-2">About</label>
               {isEditing ? (
                 <textarea
                   name="about"
                   value={formData.about}
                   onChange={handleChange}
                   rows={3}
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-xl sm:rounded-2xl border border-gray-300 focus:border-el-blue-500 focus:ring-2 sm:focus:ring-4 focus:ring-el-blue-500/20 transition-all duration-200 outline-none resize-none text-sm sm:text-base"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-xl sm:rounded-2xl border border-gray-300 focus:border-red-500 focus:ring-2 sm:focus:ring-4 focus:ring-red-500/20 transition-all duration-200 outline-none resize-none text-sm sm:text-base"
                 />
               ) : (
-                <p className="text-gray-900 py-3 text-sm sm:text-base">{formData.about}</p>
+                <p className="text-white py-3 text-sm sm:text-base">{formData.about}</p>
               )}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                <label className="block text-sm font-medium text-red-600 mb-2">Email</label>
                 {isEditing ? (
                   <Input
                     type="email"
@@ -144,12 +147,12 @@ const ProfilePage = () => {
                     onChange={handleChange}
                   />
                 ) : (
-                  <p className="text-gray-900 py-3 text-sm sm:text-base">{formData.email}</p>
+                  <p className="text-white py-3 text-sm sm:text-base">{formData.email}</p>
                 )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Company</label>
+                <label className="block text-sm font-medium text-red-600 mb-2">Company</label>
                 {isEditing ? (
                   <Input
                     type="text"
@@ -158,18 +161,18 @@ const ProfilePage = () => {
                     onChange={handleChange}
                   />
                 ) : (
-                  <p className="text-gray-900 py-3 text-sm sm:text-base">{formData.company}</p>
+                  <p className="text-white py-3 text-sm sm:text-base">{formData.company}</p>
                 )}
               </div>
             </div>
 
             {/* Social Links */}
             <div className="space-y-4">
-              <h3 className="text-base sm:text-lg font-semibold text-gray-900">Social Links</h3>
-              
+              <h3 className="text-base sm:text-lg font-semibold text-el-blue-500">Social Links</h3>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Website</label>
+                  <label className="block text-sm font-medium text-red-600 mb-2">Website</label>
                   {isEditing ? (
                     <Input
                       type="url"
@@ -178,12 +181,12 @@ const ProfilePage = () => {
                       onChange={handleChange}
                     />
                   ) : (
-                    <p className="text-gray-900 py-3 text-sm sm:text-base">{formData.website}</p>
+                    <p className="text-el-blue-500 py-3 text-sm sm:text-base">{formData.website}</p>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">LinkedIn</label>
+                  <label className="block text-sm font-medium text-red-600 mb-2">LinkedIn</label>
                   {isEditing ? (
                     <Input
                       type="url"
@@ -192,7 +195,7 @@ const ProfilePage = () => {
                       onChange={handleChange}
                     />
                   ) : (
-                    <p className="text-gray-900 py-3 text-sm sm:text-base">{formData.linkedin}</p>
+                    <p className="text-el-blue-500 py-3 text-sm sm:text-base">{formData.linkedin}</p>
                   )}
                 </div>
               </div>

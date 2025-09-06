@@ -29,28 +29,28 @@ const Sidebar = () => {
     { name: 'Settings', href: '/dashboard/settings', icon: Settings },
   ]
 
-  // Determine sidebar classes based on mobile/desktop view
+  // Sidebar classes for mobile/desktop
   const getSidebarClasses = () => {
     if (isMobileView) {
-      // Mobile: Fixed positioned sidebar that slides in/out
+      // Mobile
       return `fixed inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out ${
         mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      } bg-white border-r border-gray-200 flex flex-col`
+      } bg-black border-r border-red-800 flex flex-col`
     } else {
-      // Desktop: Always visible sidebar
-      return 'w-16 sm:w-64 bg-white border-r border-gray-200 flex flex-col transition-all duration-300'
+      // Desktop
+      return 'w-16 sm:w-64 bg-black border-r border-red-800 flex flex-col transition-all duration-300'
     }
   }
 
   return (
     <div className={getSidebarClasses()}>
       {/* Logo */}
-      <div className="p-3 sm:p-6 border-b border-gray-200">
+      <div className="p-3 sm:p-5 border-b border-gray-800">
         <div className="flex items-center gap-3">
-          <div className="w-6 h-6 sm:w-8 sm:h-8 bg-el-blue-500 rounded-full flex items-center justify-center">
+          <div className="w-6 h-6 sm:w-8 sm:h-8 bg-red-600 rounded-full flex items-center justify-center shadow-md shadow-red-600/40">
             <Circle className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </div>
-          <span className="text-lg sm:text-xl font-bold font-poppins text-gray-900">
+          <span className="text-lg sm:text-xl font-bold font-poppins text-white">
             Circle
           </span>
         </div>
@@ -67,8 +67,8 @@ const Sidebar = () => {
                 className={({ isActive }) =>
                   `flex items-center gap-3 px-2 sm:px-4 py-2 sm:py-3 rounded-xl sm:rounded-2xl transition-all duration-200 group ${
                     isActive
-                      ? 'bg-el-blue-50 text-el-blue-700 shadow-sm'
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                      ? 'bg-red-600 text-white shadow-md shadow-red-600/30'
+                      : 'text-gray-300 hover:bg-gray-900 hover:text-red-500'
                   }`
                 }
                 title={item.name}

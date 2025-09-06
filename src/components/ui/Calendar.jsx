@@ -43,22 +43,22 @@ const Calendar = ({ selectedDate, onSelectDate }) => {
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 p-4">
+    <div className="bg-black text-white rounded-2xl border border-gray-200 p-4">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900">
+        <h3 className="text-lg font-semibold text-el-blue-500">
           {monthNames[month]} {year}
         </h3>
         <div className="flex gap-1">
           <button
             onClick={() => navigateMonth(-1)}
-            className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
+            className="p-2 hover:text-el-blue-500  rounded-xl transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
             onClick={() => navigateMonth(1)}
-            className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
+            className="p-2 hover:text-el-blue-500 rounded-xl transition-colors"
           >
             <ChevronRight className="w-4 h-4" />
           </button>
@@ -101,7 +101,7 @@ const Calendar = ({ selectedDate, onSelectDate }) => {
                   ? 'bg-el-blue-500 text-white'
                   : todayClass
                   ? 'bg-el-blue-100 text-el-blue-700 font-medium'
-                  : 'hover:bg-gray-100'
+                  : ''
               }`}
             >
               {day}

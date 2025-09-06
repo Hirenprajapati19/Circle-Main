@@ -11,9 +11,9 @@ const Button = ({
   const baseClasses = 'inline-flex items-center justify-center font-medium rounded-xl sm:rounded-2xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed'
   
   const variants = {
-    primary: 'btn-primary',
+    // primary: 'btn-primary',
     secondary: 'btn-secondary',
-    ghost: 'text-gray-600 hover:text-el-blue-600 hover:bg-el-blue-50',
+    ghost: 'text-gray-600 hover:text-el-red-600 hover:bg-el-red-50',
     danger: 'bg-red-500 hover:bg-red-600 text-white shadow-lg hover:shadow-xl'
   }
   

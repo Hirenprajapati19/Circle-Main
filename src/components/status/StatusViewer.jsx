@@ -20,7 +20,7 @@ const StatusViewer = ({ status, onClose }) => {
           )}
           
           {status.content && (
-            <p className="text-lg text-gray-900 mb-4">{status.content}</p>
+            <p className="text-lg text-white mb-4">{status.content}</p>
           )}
         </div>
 
@@ -28,8 +28,8 @@ const StatusViewer = ({ status, onClose }) => {
         <div className="flex items-center justify-center gap-4 mb-6">
           <Avatar src={status.user.avatar} name={status.user.name} />
           <div>
-            <h3 className="font-semibold text-gray-900">{status.user.name}</h3>
-            <p className="text-sm text-gray-600">{formatTime(status.timestamp)}</p>
+            <h3 className="font-semibold text-white">{status.user.name}</h3>
+            <p className="text-sm text-white">{formatTime(status.timestamp)}</p>
           </div>
         </div>
 

@@ -25,8 +25,8 @@ const ChatItem = ({ chat }) => {
       onClick={handleChatClick}
       className={`w-full p-3 sm:p-4 rounded-xl sm:rounded-2xl text-left transition-all duration-200 ${
         isActive
-          ? 'bg-el-blue-50 border border-el-blue-200 shadow-sm'
-          : 'hover:bg-gray-50 hover:shadow-sm'
+          ? 'bg-red-50 border border-red-200 shadow-sm'
+          : 'hover:bg-gray-900 hover:shadow-sm'
       }`}
     >
       <div className="flex items-center gap-3 sm:gap-4">
@@ -39,18 +39,18 @@ const ChatItem = ({ chat }) => {
         
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-1">
-            <h3 className="font-semibold text-gray-900 truncate text-sm sm:text-base">{chat.name}</h3>
+            <h3 className="font-semibold text-white truncate text-sm sm:text-base">{chat.name}</h3>
             <div className="flex items-center gap-2 flex-shrink-0">
-              <span className="text-xs text-gray-500">{formatTime(chat.lastMessage.timestamp)}</span>
+              <span className="text-xs text-gray-400">{formatTime(chat.lastMessage.timestamp)}</span>
               {chat.unreadCount > 0 && (
-                <div className="w-5 h-5 bg-el-blue-500 text-white text-xs rounded-full flex items-center justify-center font-medium">
+                <div className="w-5 h-5 bg-red-600 text-white text-xs rounded-full flex items-center justify-center font-medium">
                   {chat.unreadCount > 9 ? '9+' : chat.unreadCount}
                 </div>
               )}
             </div>
           </div>
           
-          <p className="text-xs sm:text-sm text-gray-600 truncate leading-relaxed">
+          <p className="text-xs sm:text-sm text-gray-400 truncate leading-relaxed">
             {chat.lastMessage.content}
           </p>
         </div>
