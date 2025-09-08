@@ -59,7 +59,7 @@ const SchedulePage = () => {
     const modalTitle = viewMeeting ? viewMeeting.title : 'Meeting'
     return (
       <>
-      <div className="p-4 sm:p-6 bg-black">
+      <div className="p-4 sm:p-6 bg-black min-h-screen">
         <div className="max-w-4xl mx-auto">
           <div className="mb-6 sm:mb-8">
             <h1 className="text-xl sm:text-2xl font-bold font-poppins text-red-600 mb-2">Schedule</h1>
