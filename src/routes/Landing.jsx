@@ -50,7 +50,7 @@ const Landing = () => {
             className="text-6xl md:text-7xl font-extrabold font-poppins text-red-500 "
             whileHover={{ scale: 1.05 }}
           >
-            CIRCLE
+            CIRCLEN
           </motion.h1>
           
           <p className="text-xl md:text-2xl text-gray-300 mb-6">
