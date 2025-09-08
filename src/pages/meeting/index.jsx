@@ -31,15 +31,15 @@ const MeetingPage = () => {
             <div className="w-12 h-12 sm:w-16 sm:h-16 bg-red-600 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-6">
               <Video className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
             </div>
-            
+
             <h1 className="text-xl sm:text-2xl font-bold font-poppins text-red-500 mb-3 sm:mb-4">
               AR Meeting Room
             </h1>
-            
+
             <p className="text-sm sm:text-base text-gray-400 mb-6 sm:mb-8 px-4">
               Join an immersive AR conference experience with spatial audio and virtual collaboration tools.
             </p>
-            
+
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-3 sm:gap-4">
                 <div className="text-center">
@@ -48,7 +48,7 @@ const MeetingPage = () => {
                   </div>
                   <p className="text-xs sm:text-sm text-gray-400">Microphone Ready</p>
                 </div>
-                
+
                 <div className="text-center">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 bg-red-600/20 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-2">
                     <Video className="w-5 h-5 sm:w-6 sm:h-6 text-red-500" />
@@ -56,9 +56,9 @@ const MeetingPage = () => {
                   <p className="text-xs sm:text-sm text-gray-400">Camera Ready</p>
                 </div>
               </div>
-              
-              <Button 
-                onClick={() => setIsInMeeting(true)} 
+
+              <Button
+                onClick={() => setIsInMeeting(true)}
                 className="w-full text-sm sm:text-base bg-red-600 hover:bg-red-700 text-white"
               >
                 Join Meeting
@@ -82,7 +82,7 @@ const MeetingPage = () => {
             <p className="text-sm sm:text-lg font-medium">Your Video</p>
           </div>
         </Card>
-        
+
         {participants.slice(0, 3).map((participant) => (
           <Card key={participant.id} className="bg-gray-900 border border-red-600 flex items-center justify-center">
             <div className="text-center text-white">
@@ -126,49 +126,48 @@ const MeetingPage = () => {
       </div>
 
       {/* Controls Bar */}
-     {/* Controls Bar */}
-<div className="fixed bottom-4 left-1/2 transform -translate-x-1/2">
-  <Card className="flex items-center justify-center gap-2 sm:gap-4 px-4 py-2 sm:px-6 sm:py-3 bg-gray-900/95 backdrop-blur border border-red-600 rounded-xl">
-    <Button
-      variant={isMuted ? 'danger' : 'secondary'}
-      size="sm"
-      onClick={() => setIsMuted(!isMuted)}
-      className="flex-shrink-0 bg-gray-800 hover:bg-gray-700 text-white"
-    >
-      {isMuted ? <MicOff className="w-4 h-4 text-red-500" /> : <Mic className="w-4 h-4 text-red-500" />}
-    </Button>
-    
-    <Button
-      variant={isVideoOff ? 'danger' : 'secondary'}
-      size="sm"
-      onClick={() => setIsVideoOff(!isVideoOff)}
-      className="flex-shrink-0 bg-gray-800 hover:bg-gray-700 text-white"
-    >
-      {isVideoOff ? <VideoOff className="w-4 h-4 text-red-500" /> : <Video className="w-4 h-4 text-red-500" />}
-    </Button>
-    
-    <Button variant="ghost" size="sm" className="flex-shrink-0 text-red-500 hover:text-white">
-      <Hand className="w-4 h-4" />
-    </Button>
-    
-    <Button variant="ghost" size="sm" className="flex-shrink-0 text-red-500 hover:text-white">
-      <Monitor className="w-4 h-4" />
-    </Button>
-    
-    <Button variant="ghost" size="sm" className="flex-shrink-0 text-red-500 hover:text-white">
-      <Settings className="w-4 h-4" />
-    </Button>
-    
-    <Button 
-      variant="danger" 
-      onClick={() => setIsInMeeting(false)}
-      className="flex-shrink-0 bg-red-600 hover:bg-red-700 text-xs sm:text-sm text-white"
-    >
-      <span className="hidden sm:inline">Leave Meeting</span>
-      <span className="sm:hidden">Leave</span>
-    </Button>
-  </Card>
-</div>
+      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2">
+        <Card className="flex items-center justify-center gap-2 sm:gap-4 px-4 py-2 sm:px-6 sm:py-3 bg-gray-900/95 backdrop-blur border border-red-600 rounded-xl">
+          <Button
+            variant={isMuted ? 'danger' : 'secondary'}
+            size="sm"
+            onClick={() => setIsMuted(!isMuted)}
+            className="flex-shrink-0 bg-gray-800 hover:bg-gray-700 text-white"
+          >
+            {isMuted ? <MicOff className="w-4 h-4 text-red-500" /> : <Mic className="w-4 h-4 text-red-500" />}
+          </Button>
+
+          <Button
+            variant={isVideoOff ? 'danger' : 'secondary'}
+            size="sm"
+            onClick={() => setIsVideoOff(!isVideoOff)}
+            className="flex-shrink-0 bg-gray-800 hover:bg-gray-700 text-white"
+          >
+            {isVideoOff ? <VideoOff className="w-4 h-4 text-red-500" /> : <Video className="w-4 h-4 text-red-500" />}
+          </Button>
+
+          <Button variant="ghost" size="sm" className="flex-shrink-0 text-red-500 hover:text-white">
+            <Hand className="w-4 h-4" />
+          </Button>
+
+          <Button variant="ghost" size="sm" className="flex-shrink-0 text-red-500 hover:text-white">
+            <Monitor className="w-4 h-4" />
+          </Button>
+
+          <Button variant="ghost" size="sm" className="flex-shrink-0 text-red-500 hover:text-white">
+            <Settings className="w-4 h-4" />
+          </Button>
+
+          <Button
+            variant="danger"
+            onClick={() => setIsInMeeting(false)}
+            className="flex-shrink-0 bg-red-600 hover:bg-red-700 text-xs sm:text-sm text-white"
+          >
+            <span className="hidden sm:inline">Leave Meeting</span>
+            <span className="sm:hidden">Leave</span>
+          </Button>
+        </Card>
+      </div>
 
     </div>
   )
