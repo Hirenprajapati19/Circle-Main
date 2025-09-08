@@ -4,46 +4,18 @@ import Card from '../../components/layout/Card'
 import Button from '../../components/ui/Button'
 import Modal from '../../components/ui/Modal'
 import Input from '../../components/ui/Input'
+import { useCommunityStore } from '../../store/useCommunity'
 
 const CommunityPage = () => {
   const [showNewCommunity, setShowNewCommunity] = useState(false)
   const [newCommunityName, setNewCommunityName] = useState('')
-
-  const communities = [
-    {
-      id: 1,
-      name: "General Discussion",
-      description: "Talk about anything and everything",
-      members: 1234,
-      posts: 45,
-      lastPost: "2 minutes ago",
-      trending: true
-    },
-    {
-      id: 2,
-      name: "Tech Talk",
-      description: "Discussions about technology and development",
-      members: 856,
-      posts: 23,
-      lastPost: "1 hour ago",
-      trending: false
-    },
-    {
-      id: 3,
-      name: "Design & Creativity",
-      description: "Share your creative work and get feedback",
-      members: 642,
-      posts: 18,
-      lastPost: "3 hours ago",
-      trending: false
-    }
-  ]
+  const { communities, createCommunity, joinCommunity, leaveCommunity } = useCommunityStore()
 
   const handleCreateCommunity = () => {
-    if (newCommunityName.trim()) {
-      setNewCommunityName('')
-      setShowNewCommunity(false)
-    }
+    if (!newCommunityName.trim()) return
+    createCommunity(newCommunityName.trim())
+    setNewCommunityName('')
+    setShowNewCommunity(false)
   }
 
   return (
@@ -103,9 +75,15 @@ const CommunityPage = () => {
                     </div>
                   </div>
                   
-                  <Button  size="sm" className="w-full sm:w-auto bg-red-600 text-white border border-gray-800 hover:border-red-600">
-                    Join
-                  </Button>
+                  {community.joined ? (
+                    <Button onClick={() => leaveCommunity(community.id)} size="sm" className="w-full sm:w-auto bg-gray-800 text-white border border-gray-800 hover:border-red-600">
+                      Leave
+                    </Button>
+                  ) : (
+                    <Button onClick={() => joinCommunity(community.id)} size="sm" className="w-full sm:w-auto bg-red-600 text-white border border-gray-800 hover:border-red-600">
+                      Join
+                    </Button>
+                  )}
                 </div>
               </Card>
             ))}
