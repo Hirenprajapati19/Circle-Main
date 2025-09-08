@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../store/useAuth'
 import { useUI } from '../../store/useUI'
 import Avatar from '../ui/Avatar'
+import { Link } from 'react-router-dom'
 
 const Topbar = () => {
   const { user } = useAuth()
@@ -42,8 +43,10 @@ const Topbar = () => {
           </button>
           
           <button onClick={() => navigate('/dashboard/settings')} className="p-2 text-gray-300 hover:text-red-500 hover:bg-gray-900 rounded-2xl transition-all">
+
+          <Link to={'/dashboard/settings'} className="p-2 text-gray-300 hover:text-red-500 hover:bg-gray-900 rounded-2xl transition-all">
             <Settings className="w-5 h-5" />
-          </button>
+          </Link>
           
           <div className="flex items-center gap-2 sm:gap-3">
             <Avatar

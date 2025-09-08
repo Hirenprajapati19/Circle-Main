@@ -9,7 +9,6 @@ import {
   Bot,
   Video,
   User,
-  Settings,
   Calendar
 } from 'lucide-react'
 import { useUI } from '../../store/useUI'
@@ -27,6 +26,7 @@ const Sidebar = () => {
     { name: 'Profile', href: '/dashboard/profile', icon: User },
     { name: 'Schedule', href: '/dashboard/schedule', icon: Calendar },
     // { name: 'Settings', href: '/dashboard/settings', icon: Settings },
+
   ]
 
   // Sidebar classes for mobile/desktop
