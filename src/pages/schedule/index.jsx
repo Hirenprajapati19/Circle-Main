@@ -6,9 +6,6 @@ import Input from '../../components/ui/Input'
 import CalendarComponent from '../../components/ui/Calendar'
 import Modal from '../../components/ui/Modal'
 
-
-import { useMeetingStore } from '../../store/useMeeting'
-
 const SchedulePage = () => {
   const [step, setStep] = useState('calendar')
   const [selectedDate, setSelectedDate] = useState(null)
@@ -23,12 +20,7 @@ const SchedulePage = () => {
   const [scheduledMeetings, setScheduledMeetings] = useState([])
   const [viewMeeting, setViewMeeting] = useState(null)
   const [scheduledMeeting, setScheduledMeeting] = useState(null)
-
-  const [scheduledMeeting, setScheduledMeeting] = useState(null)
   const [showCongrats, setShowCongrats] = useState(false)
-  const [viewMeeting, setViewMeeting] = useState(null)
-
-  const { scheduleMeeting, scheduledMeetings } = useMeetingStore()
 
   const resetForm = () => {
     setSelectedDate(null)
@@ -36,6 +28,8 @@ const SchedulePage = () => {
     setMeetingDetails({ title: '', description: '', duration: 30 })
     setMeetingPassword('')
     setScheduledMeeting(null)
+    setShowCongrats(false)
+    setViewMeeting(null)
   }
 
   const timeSlots = [
@@ -59,13 +53,6 @@ const SchedulePage = () => {
           <div className="mb-6 sm:mb-10 text-center lg:text-left">
             <h1 className="text-2xl sm:text-3xl font-bold font-poppins text-red-600 mb-2">Schedule</h1>
             <p className="text-sm sm:text-base text-gray-200">Book meetings and manage your calendar</p>
-
-      <>
-      <div className="p-4 sm:p-6 bg-black">
-        <div className="max-w-4xl mx-auto">
-          <div className="mb-6 sm:mb-8">
-            <h1 className="text-xl sm:text-2xl font-bold font-poppins text-red-600 mb-2">Schedule</h1>
-            <p className="text-sm sm:text-base text-white">Book meetings and manage your calendar</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
@@ -117,15 +104,6 @@ const SchedulePage = () => {
               </Card>
             </div>
 
-            <div>
-              <Card className="p-4 sm:p-6">
-                <h2 className="text-lg sm:text-xl font-semibold text-red-600 mb-4">Upcoming</h2>
-                <div className="space-y-3">
-                  {scheduledMeetings.length === 0 && (
-                    <div className="text-sm text-white">No upcoming meetings yet.</div>
-                  )}
-                  {scheduledMeetings.map(m => {
-
             {/* Upcoming Appointments (Dynamic) */}
             <div>
               <Card className="p-4 sm:p-6">
@@ -149,14 +127,6 @@ const SchedulePage = () => {
                           <Calendar className="w-4 h-4" />
                           <span>{dateStr}</span>
                           <Clock className="w-4 h-4 ml-2" />
-
-                        className="w-full text-left p-3 bg-gray-50 rounded-xl sm:rounded-2xl hover:bg-gray-100 transition"
-                      >
-                        <h4 className="font-medium text-gray-900 text-sm sm:text-base">{m.title}</h4>
-                        <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 mt-1">
-                          <Calendar className="w-3 h-3" />
-                          <span>{dateStr}</span>
-                          <Clock className="w-3 h-3 ml-2" />
                           <span>{timeStr}</span>
                         </div>
                       </button>
@@ -168,10 +138,11 @@ const SchedulePage = () => {
           </div>
         </div>
 
+        {/* View meeting modal */}
         <Modal
           isOpen={!!viewMeeting}
           onClose={() => setViewMeeting(null)}
-          title={viewMeeting ? viewMeeting.title : 'Meeting'}
+          title={modalTitle}
         >
           {viewMeeting && (
             <div className="space-y-2 text-white">
@@ -190,29 +161,6 @@ const SchedulePage = () => {
           )}
         </Modal>
       </div>
-      {/* View meeting modal */}
-      <Modal
-        isOpen={!!viewMeeting}
-        onClose={() => setViewMeeting(null)}
-        title={modalTitle}
-      >
-        {viewMeeting && (
-          <div className="space-y-2 text-white">
-            <div>
-              <span className="text-gray-400 mr-1">Meeting ID:</span>
-              <span className="text-red-400 font-semibold">{viewMeeting.id}</span>
-            </div>
-            <div>
-              <span className="text-gray-400 mr-1">Password:</span>
-              <span className="text-red-400 font-semibold">{viewMeeting.password || '-'}</span>
-            </div>
-            <div className="text-xs text-gray-400 pt-2">
-              Scheduled for {new Date(viewMeeting.scheduledAt).toLocaleString()}
-            </div>
-          </div>
-        )}
-      </Modal>
-      </>
     )
   }
 
@@ -285,9 +233,6 @@ const SchedulePage = () => {
                 </div>
               </div>
 
-              <div className="p-4 border border-gray-200 rounded-xl bg-white">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Set Meeting Password</label>
-
               {/* Password for this meeting */}
               <div className="p-3 sm:p-4 border border-gray-200 rounded-xl sm:rounded-2xl bg-white">
                 <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Set Meeting Password</label>
@@ -299,8 +244,6 @@ const SchedulePage = () => {
                 />
                 <p className="text-xs text-gray-500 mt-1">Attendees must enter this password to join.</p>
               </div>
-
-              <div className="p-4 border-2 border-gray-200 rounded-xl hover:border-gray-300 cursor-pointer">
 
               <div className="p-3 sm:p-4 border-2 border-gray-200 rounded-xl sm:rounded-2xl hover:border-gray-300 transition-colors cursor-pointer">
                 <div className="flex items-center gap-3">
@@ -319,21 +262,6 @@ const SchedulePage = () => {
                   <Button onClick={() => setStep('details')} variant="secondary" className="flex-1 text-sm">
                     Back
                   </Button>
-                  <Button
-                    onClick={() => {
-                      const scheduledAtStr = `${selectedDate || ''} ${selectedTime || ''}`.trim()
-                      const scheduledAt = scheduledAtStr ? new Date(scheduledAtStr) : new Date()
-                      const meeting = scheduleMeeting({
-                        title: meetingDetails.title || 'Meeting',
-                        scheduledAt: scheduledAt.toISOString(),
-                        password: meetingPassword
-                      })
-                      setScheduledMeeting(meeting)
-                      setStep('success')
-                    }}
-                    className="flex-1 text-sm py-2 sm:py-2.5 bg-red-600 hover:bg-red-700 text-white"
-                  >
-
                   <Button onClick={() => {
                     const scheduledAtIso = selectedDate && selectedTime
                       ? new Date(`${selectedDate}T${selectedTime}:00`).toISOString()
@@ -392,12 +320,6 @@ const SchedulePage = () => {
                     </div>
                     <div className="flex items-center gap-2">
                       <Key className="w-4 h-4" />
-
-                      <Hash className="w-3 h-3" />
-                      <span>Meeting ID: <span className="font-semibold text-gray-900">{scheduledMeeting.id}</span></span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Key className="w-3 h-3" />
                       <span>Password: <span className="font-semibold text-gray-900">{scheduledMeeting.password || meetingPassword}</span></span>
                     </div>
                   </>
@@ -405,22 +327,11 @@ const SchedulePage = () => {
               </div>
             </div>
 
-            <Button
-              onClick={() => {
-                setStep('calendar')
-                setSelectedDate(null)
-                setSelectedTime(null)
-                setMeetingDetails({ title: '', description: '', duration: 30 })
-                setMeetingPassword('')
-                setScheduledMeeting(null)
-              }}
-              className="w-full text-sm sm:text-base bg-red-600 hover:bg-red-700 text-white"
-            >
-
             <Button onClick={() => { setStep('calendar'); resetForm() }} className="w-full text-sm sm:text-base bg-red-600 hover:bg-red-700 text-white">
               Schedule Another Meeting
             </Button>
           </Card>
+
           <Modal isOpen={showCongrats} onClose={() => setShowCongrats(false)} title="Congratulations!">
             <div className="space-y-3">
               <p className="text-sm text-white">Your payment is confirmed and your meeting is booked.</p>
