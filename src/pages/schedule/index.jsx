@@ -7,7 +7,7 @@ import CalendarComponent from '../../components/ui/Calendar'
 import Modal from '../../components/ui/Modal'
 
 const SchedulePage = () => {
-  const [step, setStep] = useState('calendar') // calendar, details, payment, success
+  const [step, setStep] = useState('calendar')
   const [selectedDate, setSelectedDate] = useState(null)
   const [selectedTime, setSelectedTime] = useState(null)
   const [meetingDetails, setMeetingDetails] = useState({
