@@ -3,8 +3,10 @@ import { Eye, Heart } from 'lucide-react'
 import Card from '../layout/Card'
 import Avatar from '../ui/Avatar'
 import { formatTime } from '../../lib/format'
+import { useAuth } from '../../store/useAuth'
 
 const StatusList = ({ statuses = [], onViewStatus }) => {
+  const { user } = useAuth()
   return (
     <Card className="p-6 bg-black border border-gray-800 shadow-lg rounded-2xl">
       {/* Title */}
@@ -35,10 +37,12 @@ const StatusList = ({ statuses = [], onViewStatus }) => {
                 <Eye className="w-3 h-3 text-red-500" />
                 {status.views ?? 0}
               </span>
-              <span className="flex items-center gap-1">
-                <Heart className="w-3 h-3 text-red-500" />
-                {status.likes ?? 0}
-              </span>
+              {(status.user?.name === (user?.name || 'Me')) && (
+                <span className="flex items-center gap-1">
+                  <Heart className="w-3 h-3 text-red-500" />
+                  {status.likes ?? 0}
+                </span>
+              )}
             </div>
           </button>
         ))}

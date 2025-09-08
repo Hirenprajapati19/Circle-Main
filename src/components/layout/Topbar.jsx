@@ -2,11 +2,13 @@ import React from 'react'
 import { Search, Bell, Settings, Menu } from 'lucide-react'
 import { useAuth } from '../../store/useAuth'
 import { useUI } from '../../store/useUI'
+import { useNotifStore } from '../../store/useNotif'
 import Avatar from '../ui/Avatar'
 
 const Topbar = () => {
   const { user } = useAuth()
   const { isMobileView, toggleMobileSidebar } = useUI()
+  const { unreadCount, clear } = useNotifStore()
 
   return (
     <header className="bg-black border-b border-gray-800 px-4 sm:px-6 py-3 sm:py-4">
@@ -35,8 +37,13 @@ const Topbar = () => {
 
         {/* Right Section */}
         <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
-          <button className="p-2 text-gray-300 hover:text-red-500 hover:bg-gray-900 rounded-2xl transition-all">
+          <button onClick={clear} className="relative p-2 text-gray-300 hover:text-red-500 hover:bg-gray-900 rounded-2xl transition-all">
             <Bell className="w-5 h-5" />
+            {unreadCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] leading-none px-1.5 py-0.5 rounded-full">
+                {unreadCount}
+              </span>
+            )}
           </button>
           
           <button className="p-2 text-gray-300 hover:text-red-500 hover:bg-gray-900 rounded-2xl transition-all">
