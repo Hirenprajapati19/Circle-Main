@@ -45,7 +45,7 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="p-4 sm:p-6 bg-black">
+    <div className="p-4 sm:p-6 bg-black min-h-screen">
       <div className="max-w-2xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-8 gap-4">
           <div>
