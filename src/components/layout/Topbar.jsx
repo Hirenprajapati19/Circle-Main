@@ -1,5 +1,6 @@
 import React from 'react'
 import { Search, Bell, Settings, Menu } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../store/useAuth'
 import { useUI } from '../../store/useUI'
 import Avatar from '../ui/Avatar'
@@ -7,6 +8,7 @@ import Avatar from '../ui/Avatar'
 const Topbar = () => {
   const { user } = useAuth()
   const { isMobileView, toggleMobileSidebar } = useUI()
+  const navigate = useNavigate()
 
   return (
     <header className="bg-black border-b border-gray-800 px-4 sm:px-6 py-3 sm:py-4">
@@ -39,7 +41,7 @@ const Topbar = () => {
             <Bell className="w-5 h-5" />
           </button>
           
-          <button className="p-2 text-gray-300 hover:text-red-500 hover:bg-gray-900 rounded-2xl transition-all">
+          <button onClick={() => navigate('/dashboard/settings')} className="p-2 text-gray-300 hover:text-red-500 hover:bg-gray-900 rounded-2xl transition-all">
             <Settings className="w-5 h-5" />
           </button>
           
