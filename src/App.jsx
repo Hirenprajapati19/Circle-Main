@@ -11,7 +11,7 @@ const AppRoutes = () => {
   const { isAuthenticated } = useAuth()
   return (
     <Routes>
-      <Route path="/" element={<Landing />} />
+      <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Landing />} />
       <Route path="/auth/login" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />} />
       <Route path="/auth/signup" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Signup />} />
       <Route path="/dashboard/*" element={isAuthenticated ? <Dashboard /> : <Navigate to="/auth/login" replace />} />
