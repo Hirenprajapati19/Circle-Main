@@ -2,17 +2,16 @@ import React from 'react'
 import { Eye, Heart } from 'lucide-react'
 import Card from '../layout/Card'
 import Avatar from '../ui/Avatar'
-import { mockStatuses } from '../../mock/statuses.json'
 import { formatTime } from '../../lib/format'
 
-const StatusList = ({ onViewStatus }) => {
+const StatusList = ({ statuses = [], onViewStatus }) => {
   return (
     <Card className="p-6 bg-black border border-gray-800 shadow-lg rounded-2xl">
       {/* Title */}
       <h3 className="font-semibold text-red-600 mb-4">Recent Updates</h3>
       
       <div className="space-y-4">
-        {mockStatuses.map((status) => (
+        {statuses.map((status) => (
           <button
             key={status.id}
             onClick={() => onViewStatus(status)}
@@ -34,15 +33,18 @@ const StatusList = ({ onViewStatus }) => {
             <div className="flex items-center gap-3 text-sm text-gray-400">
               <span className="flex items-center gap-1">
                 <Eye className="w-3 h-3 text-red-500" />
-                {status.views}
+                {status.views ?? 0}
               </span>
               <span className="flex items-center gap-1">
                 <Heart className="w-3 h-3 text-red-500" />
-                {status.likes}
+                {status.likes ?? 0}
               </span>
             </div>
           </button>
         ))}
+        {statuses.length === 0 && (
+          <div className="text-sm text-gray-400">No statuses yet. Be the first to post!</div>
+        )}
       </div>
     </Card>
   )

@@ -4,7 +4,7 @@ import { useAuth } from '../../store/useAuth'
 import Card from '../layout/Card'
 import Avatar from '../ui/Avatar'
 
-const MyStatus = () => {
+const MyStatus = ({ onAddText, onAddPhoto }) => {
   const { user } = useAuth()
 
   return (
@@ -16,7 +16,10 @@ const MyStatus = () => {
       <div className="text-center">
         <div className="relative inline-block mb-4">
           <Avatar size="xl" name={user?.name} />
-          <button className="absolute bottom-0 right-0 w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700 transition-colors shadow-md">
+          <button
+            onClick={onAddText}
+            className="absolute bottom-0 right-0 w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700 transition-colors shadow-md"
+          >
             <Plus className="w-4 h-4" />
           </button>
         </div>
@@ -25,12 +28,18 @@ const MyStatus = () => {
         
         {/* Options */}
         <div className="grid grid-cols-2 gap-3">
-          <button className="p-3 border-2 border-dashed border-gray-500 rounded-2xl hover:border-red-600 hover:bg-red-600/10 transition-colors flex flex-col items-center gap-2">
+          <button
+            onClick={onAddPhoto}
+            className="p-3 border-2 border-dashed border-gray-500 rounded-2xl hover:border-red-600 hover:bg-red-600/10 transition-colors flex flex-col items-center gap-2"
+          >
             <Camera className="w-5 h-5 text-gray-300" />
             <span className="text-xs text-gray-300">Photo</span>
           </button>
           
-          <button className="p-3 border-2 border-dashed border-gray-500 rounded-2xl hover:border-red-600 hover:bg-red-600/10 transition-colors flex flex-col items-center gap-2">
+          <button
+            onClick={onAddText}
+            className="p-3 border-2 border-dashed border-gray-500 rounded-2xl hover:border-red-600 hover:bg-red-600/10 transition-colors flex flex-col items-center gap-2"
+          >
             <div className="w-5 h-5 bg-gray-400 rounded"></div>
             <span className="text-xs text-gray-300">Text</span>
           </button>

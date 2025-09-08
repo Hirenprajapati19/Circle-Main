@@ -5,7 +5,9 @@ import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import CalendarComponent from '../../components/ui/Calendar'
 import Modal from '../../components/ui/Modal'
+
 import { useMeetingStore } from '../../store/useMeeting'
+
 
 const SchedulePage = () => {
   const [step, setStep] = useState('calendar') // calendar, details, payment, success
@@ -17,11 +19,12 @@ const SchedulePage = () => {
     duration: 30
   })
   const [meetingPassword, setMeetingPassword] = useState('')
-  const [scheduledMeeting, setScheduledMeeting] = useState(null)
-  const [showCongrats, setShowCongrats] = useState(false)
+
+  const [scheduledMeetings, setScheduledMeetings] = useState([])
   const [viewMeeting, setViewMeeting] = useState(null)
 
-  const { scheduleMeeting, scheduledMeetings } = useMeetingStore()
+  const [scheduledMeeting, setScheduledMeeting] = useState(null)
+  const [showCongrats, setShowCongrats] = useState(false)
 
   const resetForm = () => {
     setSelectedDate(null)
@@ -29,6 +32,8 @@ const SchedulePage = () => {
     setMeetingDetails({ title: '', description: '', duration: 30 })
     setMeetingPassword('')
     setScheduledMeeting(null)
+    setShowCongrats(false)
+    setViewMeeting(null)
   }
 
   const timeSlots = [
@@ -58,6 +63,12 @@ const SchedulePage = () => {
   if (step === 'calendar') {
     const modalTitle = viewMeeting ? viewMeeting.title : 'Meeting'
     return (
+      <div className="p-4 sm:p-6 bg-black min-h-screen">
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-6 sm:mb-10 text-center lg:text-left">
+            <h1 className="text-2xl sm:text-3xl font-bold font-poppins text-red-600 mb-2">Schedule</h1>
+            <p className="text-sm sm:text-base text-gray-200">Book meetings and manage your calendar</p>
+
       <>
       <div className="p-4 sm:p-6 bg-black min-h-screen">
         <div className="max-w-4xl mx-auto">
@@ -131,6 +142,14 @@ const SchedulePage = () => {
                       <button
                         key={m.id}
                         onClick={() => setViewMeeting(m)}
+                        className="w-full text-left p-3 bg-gray-100 rounded-xl hover:bg-gray-200 transition"
+                      >
+                        <h4 className="font-medium text-gray-900 text-base">{m.title}</h4>
+                        <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
+                          <Calendar className="w-4 h-4" />
+                          <span>{dateStr}</span>
+                          <Clock className="w-4 h-4 ml-2" />
+
                         className="w-full text-left p-3 bg-gray-50 rounded-xl sm:rounded-2xl hover:bg-gray-100 transition"
                       >
                         <h4 className="font-medium text-gray-900 text-sm sm:text-base">{m.title}</h4>
@@ -148,30 +167,31 @@ const SchedulePage = () => {
             </div>
           </div>
         </div>
+
+        {/* View meeting modal */}
+        <Modal
+          isOpen={!!viewMeeting}
+          onClose={() => setViewMeeting(null)}
+          title={modalTitle}
+        >
+          {viewMeeting && (
+            <div className="space-y-2 text-white">
+              <div className="flex items-center gap-2">
+                <Hash className="w-4 h-4" />
+                <span>Meeting ID: <span className="text-red-400 font-semibold">{viewMeeting.id}</span></span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Key className="w-4 h-4" />
+                <span>Password: <span className="text-red-400 font-semibold">{viewMeeting.password || '-'}</span></span>
+              </div>
+              <div className="text-xs text-gray-400 pt-2">
+                Scheduled for {new Date(viewMeeting.scheduledAt).toLocaleString()}
+              </div>
+            </div>
+          )}
+        </Modal>
+
       </div>
-      {/* View meeting modal */}
-      <Modal
-        isOpen={!!viewMeeting}
-        onClose={() => setViewMeeting(null)}
-        title={modalTitle}
-      >
-        {viewMeeting && (
-          <div className="space-y-2 text-white">
-            <div>
-              <span className="text-gray-400 mr-1">Meeting ID:</span>
-              <span className="text-red-400 font-semibold">{viewMeeting.id}</span>
-            </div>
-            <div>
-              <span className="text-gray-400 mr-1">Password:</span>
-              <span className="text-red-400 font-semibold">{viewMeeting.password || '-'}</span>
-            </div>
-            <div className="text-xs text-gray-400 pt-2">
-              Scheduled for {new Date(viewMeeting.scheduledAt).toLocaleString()}
-            </div>
-          </div>
-        )}
-      </Modal>
-      </>
     )
   }
 
@@ -324,6 +344,12 @@ const SchedulePage = () => {
                 {scheduledMeeting && (
                   <>
                     <div className="flex items-center gap-2">
+                      <Hash className="w-4 h-4" />
+                      <span>Meeting ID: <span className="font-semibold text-gray-900">{scheduledMeeting.id}</span></span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Key className="w-4 h-4" />
+
                       <Hash className="w-3 h-3" />
                       <span>Meeting ID: <span className="font-semibold text-gray-900">{scheduledMeeting.id}</span></span>
                     </div>
@@ -340,6 +366,7 @@ const SchedulePage = () => {
               Schedule Another Meeting
             </Button>
           </Card>
+
           <Modal isOpen={showCongrats} onClose={() => setShowCongrats(false)} title="Congratulations!">
             <div className="space-y-3">
               <p className="text-sm text-white">Your payment is confirmed and your meeting is booked.</p>
