@@ -20,17 +20,27 @@ const StatusPage = () => {
   const [previewUrl, setPreviewUrl] = useState('')
 
   const [statuses, setStatuses] = useState(() => {
+    const isFresh = (ts) => {
+      try { return Date.now() - new Date(ts).getTime() < 24 * 60 * 60 * 1000 } catch { return false }
+    }
     try {
       const saved = localStorage.getItem('circle.statuses')
-      if (saved) return JSON.parse(saved)
+      if (saved) return JSON.parse(saved).filter(s => isFresh(s.timestamp))
     } catch (_) {}
-    return mockStatuses
+    return mockStatuses.filter(s => isFresh(s.timestamp))
   })
 
   useEffect(() => {
-    try {
-      localStorage.setItem('circle.statuses', JSON.stringify(statuses))
-    } catch (_) {}
+    const isFresh = (ts) => {
+      try { return Date.now() - new Date(ts).getTime() < 24 * 60 * 60 * 1000 } catch { return false }
+    }
+    const fresh = statuses.filter(s => isFresh(s.timestamp))
+    if (fresh.length !== statuses.length) {
+      // prune expired
+      setStatuses(fresh)
+      return
+    }
+    try { localStorage.setItem('circle.statuses', JSON.stringify(fresh)) } catch (_) {}
   }, [statuses])
 
   const openAddModal = (type) => {
@@ -63,15 +73,23 @@ const StatusPage = () => {
       user: { name: user?.name || 'Me', avatar: user?.avatar || null },
       timestamp: new Date().toISOString(),
       views: 0,
-      likes: 0
+      likes: 0,
+      likedByMe: false
     }
     const contentToUse = previewUrl
     const newStatus = addType === 'image'
       ? { ...base, type: 'image', content: contentToUse || 'Image' }
       : { ...base, type: 'text', content: textContent }
-
     setStatuses(prev => [newStatus, ...prev])
     closeAddModal()
+  }
+
+  const handleLikeStatus = (statusId) => {
+    setStatuses(prev => prev.map(s => {
+      if (s.id !== statusId) return s
+      if (s.likedByMe) return s
+      return { ...s, likes: (s.likes || 0) + 1, likedByMe: true }
+    }))
   }
 
   return (
@@ -119,6 +137,7 @@ const StatusPage = () => {
             onClose={() => setViewingStatus(null)}
             isOwn={viewingStatus?.user?.name === (user?.name || 'Me')}
             onShowLikes={(count) => { setLikesCount(count); setShowLikesModal(true) }}
+            onLike={handleLikeStatus}
           />
         )}
 
