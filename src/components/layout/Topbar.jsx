@@ -3,6 +3,7 @@ import { Search, Bell, Settings, Menu } from 'lucide-react'
 import { useAuth } from '../../store/useAuth'
 import { useUI } from '../../store/useUI'
 import Avatar from '../ui/Avatar'
+import { Link } from 'react-router-dom'
 
 const Topbar = () => {
   const { user } = useAuth()
@@ -39,9 +40,9 @@ const Topbar = () => {
             <Bell className="w-5 h-5" />
           </button>
           
-          <button className="p-2 text-gray-300 hover:text-red-500 hover:bg-gray-900 rounded-2xl transition-all">
+          <Link to={'/dashboard/settings'} className="p-2 text-gray-300 hover:text-red-500 hover:bg-gray-900 rounded-2xl transition-all">
             <Settings className="w-5 h-5" />
-          </button>
+          </Link>
           
           <div className="flex items-center gap-2 sm:gap-3">
             <Avatar
