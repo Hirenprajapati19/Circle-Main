@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
-import { Calendar, Clock, CreditCard, Check } from 'lucide-react'
+import { Calendar, Clock, CreditCard, Check, Hash, Key } from 'lucide-react'
 import Card from '../../components/layout/Card'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import CalendarComponent from '../../components/ui/Calendar'
+import Modal from '../../components/ui/Modal'
+import { useMeetingStore } from '../../store/useMeeting'
 
 const SchedulePage = () => {
   const [step, setStep] = useState('calendar') // calendar, details, payment, success
@@ -14,6 +16,20 @@ const SchedulePage = () => {
     description: '',
     duration: 30
   })
+  const [meetingPassword, setMeetingPassword] = useState('')
+  const [scheduledMeeting, setScheduledMeeting] = useState(null)
+  const [showCongrats, setShowCongrats] = useState(false)
+  const [viewMeeting, setViewMeeting] = useState(null)
+
+  const { scheduleMeeting, scheduledMeetings } = useMeetingStore()
+
+  const resetForm = () => {
+    setSelectedDate(null)
+    setSelectedTime(null)
+    setMeetingDetails({ title: '', description: '', duration: 30 })
+    setMeetingPassword('')
+    setScheduledMeeting(null)
+  }
 
   const timeSlots = [
     '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
@@ -40,7 +56,9 @@ const SchedulePage = () => {
   ]
 
   if (step === 'calendar') {
+    const modalTitle = viewMeeting ? viewMeeting.title : 'Meeting'
     return (
+      <>
       <div className="p-4 sm:p-6 bg-black">
         <div className="max-w-4xl mx-auto">
           <div className="mb-6 sm:mb-8">
@@ -97,28 +115,63 @@ const SchedulePage = () => {
               </Card>
             </div>
 
-            {/* Upcoming Appointments */}
+            {/* Upcoming Appointments (Dynamic) */}
             <div>
               <Card className="p-4 sm:p-6">
                 <h2 className="text-base sm:text-lg font-semibold text-red-600 mb-3 sm:mb-4">Upcoming</h2>
                 <div className="space-y-2 sm:space-y-3">
-                  {upcomingAppointments.map((apt) => (
-                    <div key={apt.id} className="p-3 bg-gray-50 rounded-xl sm:rounded-2xl">
-                      <h4 className="font-medium text-gray-900 text-sm sm:text-base">{apt.title}</h4>
-                      <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 mt-1">
-                        <Calendar className="w-3 h-3" />
-                        <span>{apt.date}</span>
-                        <Clock className="w-3 h-3 ml-2" />
-                        <span>{apt.time}</span>
-                      </div>
-                    </div>
-                  ))}
+                  {scheduledMeetings.length === 0 && (
+                    <div className="text-xs sm:text-sm text-white">No upcoming meetings yet.</div>
+                  )}
+                  {scheduledMeetings.map((m) => {
+                    const dt = new Date(m.scheduledAt)
+                    const dateStr = dt.toLocaleDateString()
+                    const timeStr = dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                    return (
+                      <button
+                        key={m.id}
+                        onClick={() => setViewMeeting(m)}
+                        className="w-full text-left p-3 bg-gray-50 rounded-xl sm:rounded-2xl hover:bg-gray-100 transition"
+                      >
+                        <h4 className="font-medium text-gray-900 text-sm sm:text-base">{m.title}</h4>
+                        <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 mt-1">
+                          <Calendar className="w-3 h-3" />
+                          <span>{dateStr}</span>
+                          <Clock className="w-3 h-3 ml-2" />
+                          <span>{timeStr}</span>
+                        </div>
+                      </button>
+                    )
+                  })}
                 </div>
               </Card>
             </div>
           </div>
         </div>
       </div>
+      {/* View meeting modal */}
+      <Modal
+        isOpen={!!viewMeeting}
+        onClose={() => setViewMeeting(null)}
+        title={modalTitle}
+      >
+        {viewMeeting && (
+          <div className="space-y-2 text-white">
+            <div>
+              <span className="text-gray-400 mr-1">Meeting ID:</span>
+              <span className="text-red-400 font-semibold">{viewMeeting.id}</span>
+            </div>
+            <div>
+              <span className="text-gray-400 mr-1">Password:</span>
+              <span className="text-red-400 font-semibold">{viewMeeting.password || '-'}</span>
+            </div>
+            <div className="text-xs text-gray-400 pt-2">
+              Scheduled for {new Date(viewMeeting.scheduledAt).toLocaleString()}
+            </div>
+          </div>
+        )}
+      </Modal>
+      </>
     )
   }
 
@@ -190,6 +243,18 @@ const SchedulePage = () => {
                 </div>
               </div>
 
+              {/* Password for this meeting */}
+              <div className="p-3 sm:p-4 border border-gray-200 rounded-xl sm:rounded-2xl bg-white">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Set Meeting Password</label>
+                <Input
+                  placeholder="Create a password"
+                  type="password"
+                  value={meetingPassword}
+                  onChange={(e) => setMeetingPassword(e.target.value)}
+                />
+                <p className="text-xs text-gray-500 mt-1">Attendees must enter this password to join.</p>
+              </div>
+
               <div className="p-3 sm:p-4 border-2 border-gray-200 rounded-xl sm:rounded-2xl hover:border-gray-300 transition-colors cursor-pointer">
                 <div className="flex items-center gap-3">
                   <div className="w-4 h-4 sm:w-5 sm:h-5 bg-gray-400 rounded"></div>
@@ -207,7 +272,19 @@ const SchedulePage = () => {
                   <Button onClick={() => setStep('details')} variant="secondary" className="flex-1 text-sm">
                     Back
                   </Button>
-                  <Button onClick={() => setStep('success')} className="flex-1 text-sm py-2 sm:py-2.5 bg-red-600 hover:bg-red-700 text-white">
+                  <Button onClick={() => {
+                    const scheduledAtIso = selectedDate && selectedTime
+                      ? new Date(`${selectedDate}T${selectedTime}:00`).toISOString()
+                      : new Date().toISOString()
+                    const meeting = scheduleMeeting({
+                      title: meetingDetails.title || 'Meeting',
+                      scheduledAt: scheduledAtIso,
+                      password: meetingPassword
+                    })
+                    setScheduledMeeting(meeting)
+                    setStep('success')
+                    setShowCongrats(true)
+                  }} className="flex-1 text-sm py-2 sm:py-2.5 bg-red-600 hover:bg-red-700 text-white">
                     Pay Now
                   </Button>
                 </div>
@@ -244,13 +321,39 @@ const SchedulePage = () => {
                   <Clock className="w-3 h-3" />
                   <span>{selectedTime} (30 minutes)</span>
                 </div>
+                {scheduledMeeting && (
+                  <>
+                    <div className="flex items-center gap-2">
+                      <Hash className="w-3 h-3" />
+                      <span>Meeting ID: <span className="font-semibold text-gray-900">{scheduledMeeting.id}</span></span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Key className="w-3 h-3" />
+                      <span>Password: <span className="font-semibold text-gray-900">{scheduledMeeting.password || meetingPassword}</span></span>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
 
-            <Button onClick={() => setStep('calendar')} className="w-full text-sm sm:text-base bg-red-600 hover:bg-red-700 text-white">
+            <Button onClick={() => { setStep('calendar'); resetForm() }} className="w-full text-sm sm:text-base bg-red-600 hover:bg-red-700 text-white">
               Schedule Another Meeting
             </Button>
           </Card>
+          <Modal isOpen={showCongrats} onClose={() => setShowCongrats(false)} title="Congratulations!">
+            <div className="space-y-3">
+              <p className="text-sm text-white">Your payment is confirmed and your meeting is booked.</p>
+              {scheduledMeeting && (
+                <div className="text-sm text-white space-y-1">
+                  <div>Meeting ID: <span className="text-red-400 font-semibold">{scheduledMeeting.id}</span></div>
+                  <div>Password: <span className="text-red-400 font-semibold">{scheduledMeeting.password || meetingPassword}</span></div>
+                </div>
+              )}
+              <div className="pt-2">
+                <Button onClick={() => setShowCongrats(false)} className="w-full bg-red-600 hover:bg-red-700 text-white">Great!</Button>
+              </div>
+            </div>
+          </Modal>
         </div>
       </div>
     )

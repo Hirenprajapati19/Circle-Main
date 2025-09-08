@@ -2,11 +2,18 @@ import React, { useState } from 'react'
 import { Video, Mic, MicOff, VideoOff, Users, Hand, Settings, Monitor, MessageSquare } from 'lucide-react'
 import Card from '../../components/layout/Card'
 import Button from '../../components/ui/Button'
+import Input from '../../components/ui/Input'
+import { useMeetingStore } from '../../store/useMeeting'
 
 const MeetingPage = () => {
+  const { joinMeeting, scheduleMeeting, leaveMeeting, currentMeeting } = useMeetingStore()
   const [isInMeeting, setIsInMeeting] = useState(false)
   const [isMuted, setIsMuted] = useState(false)
   const [isVideoOff, setIsVideoOff] = useState(false)
+  // Join form state
+  const [joinId, setJoinId] = useState('')
+  const [joinPassword, setJoinPassword] = useState('')
+  const [joinError, setJoinError] = useState('')
 
   const participants = [
     { id: 1, name: 'John Doe', avatar: null, isMuted: false, isHost: true },
@@ -25,8 +32,8 @@ const MeetingPage = () => {
 
   if (!isInMeeting) {
     return (
-      <div className="p-4 sm:p-6 h-full bg-black text-white">
-        <div className="max-w-2xl mx-auto h-full flex flex-col justify-center">
+      <div className="p-4 sm:p-6 min-h-screen bg-black text-white">
+        <div className="max-w-md mx-auto min-h-screen flex flex-col justify-center">
           <Card className="text-center p-6 sm:p-8 bg-black border border-red-600">
             <div className="w-12 h-12 sm:w-16 sm:h-16 bg-red-600 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-6">
               <Video className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
@@ -39,27 +46,33 @@ const MeetingPage = () => {
             <p className="text-sm sm:text-base text-gray-400 mb-6 sm:mb-8 px-4">
               Join an immersive AR conference experience with spatial audio and virtual collaboration tools.
             </p>
-            
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                <div className="text-center">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-600/20 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-2">
-                    <Mic className="w-5 h-5 sm:w-6 sm:h-6 text-green-500" />
-                  </div>
-                  <p className="text-xs sm:text-sm text-gray-400">Microphone Ready</p>
-                </div>
-                
-                <div className="text-center">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-red-600/20 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-2">
-                    <Video className="w-5 h-5 sm:w-6 sm:h-6 text-red-500" />
-                  </div>
-                  <p className="text-xs sm:text-sm text-gray-400">Camera Ready</p>
-                </div>
-              </div>
-              
-              <Button 
-                onClick={() => setIsInMeeting(true)} 
-                className="w-full text-sm sm:text-base bg-red-600 hover:bg-red-700 text-white"
+            <div className="space-y-4 text-left">
+              <label className="text-sm text-gray-300">Meeting ID</label>
+              <Input
+                placeholder="Enter meeting ID"
+                value={joinId}
+                onChange={(e) => setJoinId(e.target.value)}
+              />
+              <label className="text-sm text-gray-300">Password</label>
+              <Input
+                placeholder="Enter password"
+                type="password"
+                value={joinPassword}
+                onChange={(e) => setJoinPassword(e.target.value)}
+              />
+              {joinError && (
+                <div className="text-red-400 text-sm">{joinError}</div>
+              )}
+              <Button
+                onClick={() => {
+                  const resp = joinMeeting({ id: joinId.trim(), password: joinPassword })
+                  if (!resp.ok) {
+                    setJoinError(resp.error)
+                    return
+                  }
+                  setIsInMeeting(true)
+                }}
+                className="w-full text-sm sm:text-base bg-red-600 hover:bg-red-700 text-white mt-2"
               >
                 Join Meeting
               </Button>
@@ -71,7 +84,7 @@ const MeetingPage = () => {
   }
 
   return (
-    <div className="h-full bg-black relative flex">
+    <div className="min-h-screen bg-black relative flex">
       {/* Video Grid */}
       <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 p-3 sm:p-6">
         <Card className="bg-gray-900 border border-red-600 flex items-center justify-center">
@@ -161,7 +174,7 @@ const MeetingPage = () => {
     
     <Button 
       variant="danger" 
-      onClick={() => setIsInMeeting(false)}
+      onClick={() => { leaveMeeting(); setIsInMeeting(false) }}
       className="flex-shrink-0 bg-red-600 hover:bg-red-700 text-xs sm:text-sm text-white"
     >
       <span className="hidden sm:inline">Leave Meeting</span>
