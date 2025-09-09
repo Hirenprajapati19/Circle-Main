@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import Card from '../../components/layout/Card'
 import Button from '../../components/ui/Button'
 import { Check, Crown, Shield, Sparkles, Zap, Rocket, Star } from 'lucide-react'
@@ -109,6 +109,80 @@ const UpgradePage = () => {
       if (!paypalEmail.trim() || !emailRegex.test(paypalEmail)) return false
     }
     return true
+  }
+
+  // Confetti component for success popup
+  const ConfettiBurst = ({ active = false, durationMs = 1500 }) => {
+    const canvasRef = useRef(null)
+    const frameRef = useRef(0)
+    const startRef = useRef(0)
+    const particlesRef = useRef([])
+
+    useEffect(() => {
+      if (!active) return
+      const canvas = canvasRef.current
+      if (!canvas) return
+      const ctx = canvas.getContext('2d')
+      let width = canvas.clientWidth
+      let height = canvas.clientHeight
+      canvas.width = width
+      canvas.height = height
+
+      const resize = () => {
+        width = canvas.clientWidth
+        height = canvas.clientHeight
+        canvas.width = width
+        canvas.height = height
+      }
+      window.addEventListener('resize', resize)
+
+      // initialize particles
+      const colors = ['#ef4444', '#22c55e', '#3b82f6', '#eab308', '#a855f7']
+      const particles = Array.from({ length: 80 }).map(() => ({
+        x: width / 2 + (Math.random() - 0.5) * 60,
+        y: height / 2,
+        vx: (Math.random() - 0.5) * 6,
+        vy: Math.random() * -6 - 2,
+        g: 0.15 + Math.random() * 0.1,
+        size: 2 + Math.random() * 3,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        rot: Math.random() * Math.PI,
+        vr: (Math.random() - 0.5) * 0.2
+      }))
+      particlesRef.current = particles
+
+      const draw = (ts) => {
+        if (!startRef.current) startRef.current = ts
+        const elapsed = ts - startRef.current
+        ctx.clearRect(0, 0, width, height)
+        particlesRef.current.forEach(p => {
+          p.vy += p.g
+          p.x += p.vx
+          p.y += p.vy
+          p.rot += p.vr
+          ctx.save()
+          ctx.translate(p.x, p.y)
+          ctx.rotate(p.rot)
+          ctx.fillStyle = p.color
+          ctx.fillRect(-p.size, -p.size, p.size * 2, p.size * 2)
+          ctx.restore()
+        })
+        if (elapsed < durationMs) {
+          frameRef.current = requestAnimationFrame(draw)
+        }
+      }
+      frameRef.current = requestAnimationFrame(draw)
+
+      return () => {
+        cancelAnimationFrame(frameRef.current)
+        window.removeEventListener('resize', resize)
+        startRef.current = 0
+      }
+    }, [active, durationMs])
+
+    return (
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
+    )
   }
 
   // UI helpers: input formatters
@@ -353,12 +427,17 @@ const UpgradePage = () => {
 
       {/* Success Modal */}
       <Modal isOpen={showSuccess} onClose={() => { setShowSuccess(false); setIsOpen(false) }} title="Payment Done" size="md">
-        <div className="flex flex-col items-center text-center py-6 sm:py-4">
-          <div className="w-16 h-16 sm:w-14 sm:h-14 mx-auto mb-4 rounded-full bg-green-600/20 border border-green-600 flex items-center justify-center">
-            <span className="text-green-400 text-3xl sm:text-2xl">✓</span>
+        <div className="relative" style={{ minHeight: 'calc(100vh - 160px)' }}>
+          <ConfettiBurst active={showSuccess} />
+          <div className="absolute inset-0 flex items-center justify-center px-4">
+            <div className="w-full max-w-sm text-center">
+              <div className="w-20 h-20 sm:w-16 sm:h-16 mx-auto mb-5 rounded-full bg-green-600/20 border border-green-600 flex items-center justify-center">
+                <span className="text-green-400 text-4xl sm:text-3xl">✓</span>
+              </div>
+              <p className="text-base sm:text-sm text-gray-300 mb-5">Your payment is successful. Enjoy {selectedPlan}!</p>
+              <Button onClick={() => { setShowSuccess(false); setIsOpen(false) }} className="w-full bg-red-600 hover:bg-red-700 text-white">Continue</Button>
+            </div>
           </div>
-          <p className="text-base sm:text-sm text-gray-300 mb-5 px-6">Your payment is successful. Enjoy {selectedPlan}!</p>
-          <Button onClick={() => { setShowSuccess(false); setIsOpen(false) }} className="w-full bg-red-600 hover:bg-red-700 text-white">Continue</Button>
         </div>
       </Modal>
     </div>
