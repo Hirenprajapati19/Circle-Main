@@ -33,7 +33,7 @@ const Sidebar = () => {
   const getSidebarClasses = () => {
     if (isMobileView) {
       // Mobile
-      return `fixed inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out ${
+      return `fixed inset-y-0 left-0 z-50 w-56 sm:w-64 transform transition-transform duration-300 ease-in-out ${
         mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'
       } bg-black border-r border-red-800 flex flex-col`
     } else {
@@ -45,19 +45,19 @@ const Sidebar = () => {
   return (
     <div className={getSidebarClasses()}>
       {/* Logo */}
-      <div className="p-3 sm:p-5 border-b border-gray-800">
-        <div className="flex items-center gap-3">
-          <div className="w-6 h-6 sm:w-8 sm:h-8 bg-red-600 rounded-full flex items-center justify-center shadow-md shadow-red-600/40">
-            <Circle className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+      <div className="p-2 sm:p-5 border-b border-gray-800">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className="w-5 h-5 sm:w-8 sm:h-8 bg-red-600 rounded-full flex items-center justify-center shadow-md shadow-red-600/40">
+            <Circle className="w-3 h-3 sm:w-5 sm:h-5 text-white" />
           </div>
-          <span className="text-lg sm:text-xl font-bold font-poppins text-white">
+          <span className="text-sm sm:text-xl font-bold font-poppins text-white">
             Circle
           </span>
         </div>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-2 sm:p-4">
+      <nav className="flex-1 p-1 sm:p-4">
         <ul className="space-y-1">
           {navigation.map((item) => (
             <li key={item.name}>
@@ -65,7 +65,7 @@ const Sidebar = () => {
                 to={item.href}
                 onClick={() => isMobileView && closeMobileSidebar()}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-2 sm:px-4 py-2 sm:py-3 rounded-xl sm:rounded-2xl transition-all duration-200 group ${
+                  `flex items-center gap-2 sm:gap-3 px-2 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-2xl transition-all duration-200 group ${
                     isActive
                       ? 'bg-red-600 text-white shadow-md shadow-red-600/30'
                       : 'text-gray-300 hover:bg-gray-900 hover:text-red-500'
@@ -73,8 +73,8 @@ const Sidebar = () => {
                 }
                 title={item.name}
               >
-                <item.icon className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
-                <span className="font-medium">{item.name}</span>
+                <item.icon className="w-3 h-3 sm:w-5 sm:h-5 flex-shrink-0" />
+                <span className="font-medium text-xs sm:text-base">{item.name}</span>
               </NavLink>
             </li>
           ))}

@@ -200,7 +200,7 @@ const SchedulePage = () => {
                   variant="secondary"
                   className="flex-1 text-sm py-2"
                 >
-                  Backk
+                  Back
                 </Button>
                 <Button
                   onClick={() => setStep('payment')}
