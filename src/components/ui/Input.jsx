@@ -15,6 +15,7 @@ const Input = ({
         placeholder:text-white    /* 🔥 placeholder color white */
         border border-gray-700 
         focus:outline-none focus:ring-2 focus:ring-red-500 
+        text-base sm:text-sm  /* >=16px on mobile to prevent iOS zoom */
         ${className}`}
     />
   )
