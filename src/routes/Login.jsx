@@ -136,7 +136,7 @@ const Login = () => {
   return (
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-gray-900 via-black to-gray-950 text-white flex items-center justify-center p-2 sm:p-3">
       {/* Background glow */}
-      <div className="absolute inset-0 -z-10">
+      <div className="absolute inset-0 -z-10 pointer-events-none select-none">
         <div className="absolute top-0 left-0 w-[200px] h-[200px] sm:w-[280px] sm:h-[280px] bg-red-600/30 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-0 right-0 w-[150px] h-[150px] sm:w-[220px] sm:h-[220px] bg-black/40 rounded-full blur-3xl animate-ping"></div>
       </div>

@@ -33,7 +33,7 @@ const Sidebar = () => {
   const getSidebarClasses = () => {
     if (isMobileView) {
       // Mobile
-      return `fixed inset-y-0 left-0 z-50 w-56 sm:w-64 transform transition-transform duration-300 ease-in-out ${
+      return `fixed inset-y-0 left-0 z-50 w-56 sm:w-64 transform transition-transform duration-300 ease-in-out will-change-transform ${
         mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'
       } bg-black border-r border-red-800 flex flex-col`
     } else {
