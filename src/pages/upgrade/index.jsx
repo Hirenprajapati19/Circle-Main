@@ -353,11 +353,11 @@ const UpgradePage = () => {
 
       {/* Success Modal */}
       <Modal isOpen={showSuccess} onClose={() => { setShowSuccess(false); setIsOpen(false) }} title="Payment Done" size="md">
-        <div className="text-center">
-          <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-green-600/20 border border-green-600 flex items-center justify-center">
-            <span className="text-green-400 text-2xl">✓</span>
+        <div className="flex flex-col items-center text-center py-6 sm:py-4">
+          <div className="w-16 h-16 sm:w-14 sm:h-14 mx-auto mb-4 rounded-full bg-green-600/20 border border-green-600 flex items-center justify-center">
+            <span className="text-green-400 text-3xl sm:text-2xl">✓</span>
           </div>
-          <p className="text-sm text-gray-300 mb-4">Your payment is successful. Enjoy {selectedPlan}!</p>
+          <p className="text-base sm:text-sm text-gray-300 mb-5 px-6">Your payment is successful. Enjoy {selectedPlan}!</p>
           <Button onClick={() => { setShowSuccess(false); setIsOpen(false) }} className="w-full bg-red-600 hover:bg-red-700 text-white">Continue</Button>
         </div>
       </Modal>
