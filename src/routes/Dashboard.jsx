@@ -11,6 +11,7 @@ import MeetingPage from '../pages/meeting'
 import ProfilePage from '../pages/profile'
 import SettingsPage from '../pages/settings'
 import SchedulePage from '../pages/schedule'
+import UpgradePage from '../pages/upgrade'
 import { useUI } from '../store/useUI'
 
 const Dashboard = () => {
@@ -30,7 +31,7 @@ const Dashboard = () => {
   }, [setMobileView])
 
   return (
-    <div className="flex min-h-screen bg-gray-50 overflow-x-hidden">
+    <div className="flex h-screen bg-gray-50 overflow-x-hidden">
       <Sidebar />
       
       {/* Mobile Overlay */}
@@ -41,10 +42,10 @@ const Dashboard = () => {
         />
       )}
       
-      <div className="flex-1 flex flex-col overflow-hidden min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 min-h-0 sm:pl-64">
         <Topbar />
         
-        <main className="flex-1 overflow-y-auto overflow-x-hidden">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden min-h-0">
           <Routes>
             <Route index element={<Navigate to="chats" replace />} />
             <Route path="chats/*" element={<ChatsPage />} />
@@ -56,6 +57,7 @@ const Dashboard = () => {
             <Route path="profile" element={<ProfilePage />} />
             <Route path="settings" element={<SettingsPage />} />
             <Route path="schedule/*" element={<SchedulePage />} />
+            <Route path="upgrade" element={<UpgradePage />} />
           </Routes>
         </main>
       </div>

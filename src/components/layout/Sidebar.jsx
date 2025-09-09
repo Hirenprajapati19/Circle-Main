@@ -9,7 +9,8 @@ import {
   Bot,
   Video,
   User,
-  Calendar
+  Calendar,
+  Sparkles
 } from 'lucide-react'
 import { useUI } from '../../store/useUI'
 
@@ -26,6 +27,7 @@ const Sidebar = () => {
     { name: 'Profile', href: '/dashboard/profile', icon: User },
     { name: 'Schedule', href: '/dashboard/schedule', icon: Calendar },
     // { name: 'Settings', href: '/dashboard/settings', icon: Settings },
+    { name: 'Upgrade Pro', href: '/dashboard/upgrade', icon: Sparkles },
 
   ]
 
@@ -38,7 +40,7 @@ const Sidebar = () => {
       } bg-black border-r border-red-800 flex flex-col`
     } else {
       // Desktop
-      return 'w-16 sm:w-64 bg-black border-r border-red-800 flex flex-col transition-all duration-300'
+      return 'fixed inset-y-0 left-0 z-40 w-16 sm:w-64 bg-black border-r border-red-800 flex flex-col transition-all duration-300'
     }
   }
 

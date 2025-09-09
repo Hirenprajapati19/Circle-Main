@@ -173,7 +173,7 @@ const ChatWindow = () => {
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 bg-black">
+      <div className="flex-1 overflow-y-auto thin-scroll p-4 sm:p-6 space-y-4 bg-black">
         {messages.length === 0 && (
           <div className="text-center text-gray-500 py-8">
             <p>No messages yet. Start the conversation!</p>
