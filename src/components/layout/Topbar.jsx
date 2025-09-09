@@ -14,7 +14,7 @@ const Topbar = () => {
   const navigate = useNavigate()
 
   return (
-    <header className="bg-black border-b border-gray-800 px-2 sm:px-6 py-2 sm:py-4">
+    <header className="sticky top-0 z-30 bg-black border-b border-gray-800 px-2 sm:px-6 py-2 sm:py-4">
       <div className="flex items-center justify-between flex-wrap gap-2 sm:gap-3">
         {/* Mobile Menu Button */}
         {isMobileView && (
