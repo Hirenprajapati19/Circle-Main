@@ -103,9 +103,8 @@ const ChatWindow = () => {
     <div className="h-full flex flex-col relative">
       {showCall && <CallBanner onClose={() => setShowCall(false)} />}
       
-      {/* Header */}
-      
-      <div className="bg-black border-b border-gray-800 px-3 sm:px-6 py-3 sm:py-4 shadow-sm">
+      {/* Header (sticky) */}
+      <div className="bg-black border-b border-gray-800 px-3 sm:px-6 py-3 sm:py-4 shadow-sm sticky top-0 z-20">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
             {/* Back button for mobile */}
