@@ -11,6 +11,32 @@
   body {
     @apply bg-white text-gray-900 font-inter overflow-x-hidden;
   }
+  
+  /* Global thin scrollbar (applies everywhere) */
+  * {
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: #3b82f6 transparent; /* Firefox - blue-500 on transparent track */
+  }
+  *::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  *::-webkit-scrollbar-track-piece {
+    background: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: rgba(59, 130, 246, 0.6); /* blue-500 */
+    border-radius: 9999px;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(59, 130, 246, 0.8);
+  }
+  *::-webkit-scrollbar-corner {
+    background: transparent;
+  }
 }
 
 @layer utilities {

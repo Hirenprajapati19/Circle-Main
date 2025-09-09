@@ -214,9 +214,9 @@ const UpgradePage = () => {
 
       {/* Upgrade Modal */}
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title={`Upgrade to ${selectedPlan}`} size="xl">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           <div>
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 mb-3 sm:mb-4">
               <span className="text-gray-400 text-sm">Billing:</span>
               <div className="inline-flex rounded-xl overflow-hidden border border-gray-800">
                 <button
@@ -230,7 +230,7 @@ const UpgradePage = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 mb-3 sm:mb-4">
               <span className="text-gray-400 text-sm">Currency:</span>
               <div className="flex flex-wrap gap-2">
                 {Object.keys(currencyRates).map((c) => (
@@ -257,7 +257,7 @@ const UpgradePage = () => {
             </Card>
           </div>
 
-          <form onSubmit={handleCheckout} className="space-y-4">
+          <form onSubmit={handleCheckout} className="space-y-3 sm:space-y-4">
             <div className="flex items-center gap-2">
               <span className="text-gray-400 text-sm">Pay with:</span>
               <div className="inline-flex rounded-xl overflow-hidden border border-gray-800">
