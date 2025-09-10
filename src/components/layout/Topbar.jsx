@@ -7,7 +7,7 @@ import { useNotifStore } from '../../store/useNotif'
 import Avatar from '../ui/Avatar'
 
 const Topbar = () => {
-  const { user } = useAuth()
+  const { user, isProUser } = useAuth()
   const { isMobileView, toggleMobileSidebar } = useUI()
   const { unreadCount, clear } = useNotifStore()
 
@@ -58,10 +58,18 @@ const Topbar = () => {
               src={user?.avatar}
               name={user?.name || 'User'}
               size="sm"
+              isPro={isProUser()}
             />
             <div className="text-xs sm:text-sm min-w-0 hidden sm:block">
-              <p className="font-medium text-white truncate">{user?.name || 'John Doe'}</p>
-              <p className="text-gray-400 text-xs">Online</p>
+              <p className="font-medium text-white truncate flex items-center gap-1">
+                {user?.name || 'John Doe'}
+                {isProUser() && (
+                  <span className="text-yellow-500 text-xs">👑</span>
+                )}
+              </p>
+              <p className="text-gray-400 text-xs">
+                {isProUser() ? 'Pro Member' : 'Online'}
+              </p>
             </div>
           </div>
         </div>

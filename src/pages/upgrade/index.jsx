@@ -3,6 +3,7 @@ import Card from '../../components/layout/Card'
 import Button from '../../components/ui/Button'
 import { Check, Crown, Shield, Sparkles, Zap, Rocket, Star } from 'lucide-react'
 import Modal from '../../components/ui/Modal'
+import { useAuth } from '../../store/useAuth'
 
 const features = [
   { icon: Crown, title: 'Priority Access', desc: 'Faster servers, zero waiting and premium support.' },
@@ -49,6 +50,7 @@ const basePrices = {
 }
 
 const UpgradePage = () => {
+  const { upgradeToPro, isProUser } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   const [selectedPlan, setSelectedPlan] = useState('Pro')
   const [billing, setBilling] = useState('monthly') // 'monthly' | 'yearly'
@@ -207,8 +209,46 @@ const UpgradePage = () => {
     setIsProcessing(true)
     setTimeout(() => {
       setIsProcessing(false)
+      // Upgrade user to pro plan
+      upgradeToPro()
       setShowSuccess(true)
     }, 1000)
+  }
+
+  // If user is already pro, show success message
+  if (isProUser()) {
+    return (
+      <div className="min-h-screen bg-black text-white p-4 sm:p-8">
+        <div className="max-w-2xl mx-auto text-center">
+          <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-6 rounded-2xl bg-gradient-to-r from-yellow-400 to-yellow-600 flex items-center justify-center shadow-[0_0_40px_rgba(234,179,8,0.35)]">
+            <Crown className="w-10 h-10 sm:w-12 sm:h-12 text-white" />
+          </div>
+          <h1 className="text-2xl sm:text-4xl font-bold font-poppins text-yellow-500 mb-4">You're Already Pro!</h1>
+          <p className="text-gray-400 text-sm sm:text-base mb-8">You have access to all premium features. Enjoy your Circle Pro experience!</p>
+          <div className="bg-gray-950 border border-yellow-600/50 rounded-xl p-6">
+            <h3 className="text-lg font-semibold text-yellow-500 mb-3">Your Pro Benefits</h3>
+            <ul className="space-y-2 text-left">
+              <li className="flex items-center gap-2 text-gray-300 text-sm">
+                <Check className="w-4 h-4 text-yellow-500" />
+                <span>Unlimited meetings and calls</span>
+              </li>
+              <li className="flex items-center gap-2 text-gray-300 text-sm">
+                <Check className="w-4 h-4 text-yellow-500" />
+                <span>AI-powered features and smart summaries</span>
+              </li>
+              <li className="flex items-center gap-2 text-gray-300 text-sm">
+                <Check className="w-4 h-4 text-yellow-500" />
+                <span>Priority support and faster servers</span>
+              </li>
+              <li className="flex items-center gap-2 text-gray-300 text-sm">
+                <Check className="w-4 h-4 text-yellow-500" />
+                <span>Advanced security and admin controls</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
