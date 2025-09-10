@@ -78,6 +78,54 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const upgradeToPro = () => {
+    const newUser = { ...user, plan: 'pro', upgradedAt: new Date().toISOString() }
+    setUser(newUser)
+    try {
+      localStorage.setItem('circle.user', JSON.stringify(newUser))
+    } catch (error) {
+      console.error('Error upgrading user:', error)
+    }
+  }
+
+  const isProUser = () => {
+    return user?.plan === 'pro'
+  }
+
+  const canUseFeature = (feature) => {
+    if (!user) return false
+    
+    // Define feature requirements
+    const featureRequirements = {
+      'unlimited_meetings': 'pro',
+      'ai_features': 'pro',
+      'priority_support': 'pro',
+      'advanced_security': 'pro',
+      'basic_chat': 'free',
+      'community_access': 'free',
+      'status_updates': 'free'
+    }
+    
+    const requiredPlan = featureRequirements[feature]
+    if (!requiredPlan) return false
+    
+    const planHierarchy = { 'free': 0, 'pro': 1, 'team': 2 }
+    const userPlanLevel = planHierarchy[user.plan] || 0
+    const requiredPlanLevel = planHierarchy[requiredPlan] || 0
+    
+    return userPlanLevel >= requiredPlanLevel
+  }
+
+  const resetToFree = () => {
+    const newUser = { ...user, plan: 'free', upgradedAt: null }
+    setUser(newUser)
+    try {
+      localStorage.setItem('circle.user', JSON.stringify(newUser))
+    } catch (error) {
+      console.error('Error resetting user plan:', error)
+    }
+  }
+
   const value = {
     user,
     isAuthenticated,
@@ -85,7 +133,11 @@ export const AuthProvider = ({ children }) => {
     login,
     register,
     logout,
-    updateUser
+    updateUser,
+    upgradeToPro,
+    isProUser,
+    canUseFeature,
+    resetToFree
   }
 
   return (

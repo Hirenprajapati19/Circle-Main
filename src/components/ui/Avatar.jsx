@@ -1,7 +1,7 @@
 import React from 'react'
-import { User } from 'lucide-react'
+import { User, Crown } from 'lucide-react'
 
-const Avatar = ({ src, name, size = 'md', status, className = '' }) => {
+const Avatar = ({ src, name, size = 'md', status, isPro = false, className = '' }) => {
   const sizes = {
     xs: 'w-5 h-5 sm:w-6 sm:h-6',
     sm: 'w-6 h-6 sm:w-8 sm:h-8',
@@ -37,6 +37,12 @@ const Avatar = ({ src, name, size = 'md', status, className = '' }) => {
       
       {status && (
         <div className={`absolute -bottom-0.5 -right-0.5 w-2 h-2 sm:w-3 sm:h-3 ${statusColors[status]} border-2 border-white rounded-full`} />
+      )}
+      
+      {isPro && (
+        <div className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center border-2 border-white shadow-lg">
+          <Crown className="w-2 h-2 sm:w-3 sm:h-3 text-white" />
+        </div>
       )}
     </div>
   )

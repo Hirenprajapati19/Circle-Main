@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Edit3, Save, X, Camera } from 'lucide-react'
+import { Edit3, Save, X, Camera, Crown } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../store/useAuth'
 import Card from '../../components/layout/Card'
 import Button from '../../components/ui/Button'
@@ -7,7 +8,8 @@ import Input from '../../components/ui/Input'
 import Avatar from '../../components/ui/Avatar'
 
 const ProfilePage = () => {
-  const { user, updateUser } = useAuth()
+  const { user, updateUser, isProUser, resetToFree } = useAuth()
+  const navigate = useNavigate()
   const [isEditing, setIsEditing] = useState(false)
   const [formData, setFormData] = useState({
     name: user?.name || 'John Doe',
@@ -80,11 +82,36 @@ const ProfilePage = () => {
           {/* Profile Picture */}
           <div className="text-center mb-8">
             <div className="relative inline-block">
-              <Avatar size="xl" name={formData.name} />
+              <Avatar size="xl" name={formData.name} isPro={isProUser()} />
               {isEditing && (
                 <button className="absolute bottom-0 right-0 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors">
                   <Camera className="w-4 h-4" />
                 </button>
+              )}
+            </div>
+            {isProUser() && (
+              <div className="mt-2 flex items-center justify-center gap-1 text-yellow-500">
+                <Crown className="w-4 h-4" />
+                <span className="text-sm font-medium">Pro Member</span>
+              </div>
+            )}
+            
+            {/* Debug buttons for testing */}
+            <div className="mt-4 flex gap-2 justify-center">
+              {isProUser() ? (
+                <Button
+                  onClick={resetToFree}
+                  className="text-xs bg-gray-600 hover:bg-gray-700 text-white"
+                >
+                  Reset to Free (Debug)
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => navigate('/dashboard/upgrade')}
+                  className="text-xs bg-red-600 hover:bg-red-700 text-white"
+                >
+                  Upgrade to Pro
+                </Button>
               )}
             </div>
           </div>

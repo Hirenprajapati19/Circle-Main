@@ -5,8 +5,11 @@ import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import { useMeetingStore } from '../../store/useMeeting'
 import Modal from '../../components/ui/Modal'
+import FeatureGate from '../../components/ui/FeatureGate'
+import { useAuth } from '../../store/useAuth'
 
 const MeetingPage = () => {
+  const { canUseFeature } = useAuth()
   const { joinMeeting, scheduleMeeting, leaveMeeting, currentMeeting } = useMeetingStore()
   const [isInMeeting, setIsInMeeting] = useState(false)
   const [isMuted, setIsMuted] = useState(false)
@@ -80,50 +83,52 @@ const MeetingPage = () => {
     return (
       <div className="p-4 sm:p-6 min-h-screen bg-black text-white">
         <div className="max-w-md mx-auto min-h-screen flex flex-col justify-center">
-          <Card className="text-center p-6 sm:p-8 bg-black border border-red-600">
-            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-red-600 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-6">
-              <Video className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
-            </div>
-            
-            <h1 className="text-xl sm:text-2xl font-bold font-poppins text-red-500 mb-3 sm:mb-4">
-              AR Meeting Room
-            </h1>
-            
-            <p className="text-sm sm:text-base text-gray-400 mb-6 sm:mb-8 px-4">
-              Join an immersive AR conference experience with spatial audio and virtual collaboration tools.
-            </p>
-            <div className="space-y-4 text-left">
-              <label className="text-sm text-gray-300">Meeting ID</label>
-              <Input
-                placeholder="Enter meeting ID"
-                value={joinId}
-                onChange={(e) => setJoinId(e.target.value)}
-              />
-              <label className="text-sm text-gray-300">Password</label>
-              <Input
-                placeholder="Enter password"
-                type="password"
-                value={joinPassword}
-                onChange={(e) => setJoinPassword(e.target.value)}
-              />
-              {joinError && (
-                <div className="text-red-400 text-sm">{joinError}</div>
-              )}
-              <Button
-                onClick={() => {
-                  const resp = joinMeeting({ id: joinId.trim(), password: joinPassword })
-                  if (!resp.ok) {
-                    setJoinError(resp.error)
-                    return
-                  }
-                  setIsInMeeting(true)
-                }}
-                className="w-full text-sm sm:text-base bg-red-600 hover:bg-red-700 text-white mt-2"
-              >
-                Join Meeting
-              </Button>
-            </div>
-          </Card>
+          <FeatureGate feature="unlimited_meetings">
+            <Card className="text-center p-6 sm:p-8 bg-black border border-red-600">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-red-600 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                <Video className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+              </div>
+              
+              <h1 className="text-xl sm:text-2xl font-bold font-poppins text-red-500 mb-3 sm:mb-4">
+                AR Meeting Room
+              </h1>
+              
+              <p className="text-sm sm:text-base text-gray-400 mb-6 sm:mb-8 px-4">
+                Join an immersive AR conference experience with spatial audio and virtual collaboration tools.
+              </p>
+              <div className="space-y-4 text-left">
+                <label className="text-sm text-gray-300">Meeting ID</label>
+                <Input
+                  placeholder="Enter meeting ID"
+                  value={joinId}
+                  onChange={(e) => setJoinId(e.target.value)}
+                />
+                <label className="text-sm text-gray-300">Password</label>
+                <Input
+                  placeholder="Enter password"
+                  type="password"
+                  value={joinPassword}
+                  onChange={(e) => setJoinPassword(e.target.value)}
+                />
+                {joinError && (
+                  <div className="text-red-400 text-sm">{joinError}</div>
+                )}
+                <Button
+                  onClick={() => {
+                    const resp = joinMeeting({ id: joinId.trim(), password: joinPassword })
+                    if (!resp.ok) {
+                      setJoinError(resp.error)
+                      return
+                    }
+                    setIsInMeeting(true)
+                  }}
+                  className="w-full text-sm sm:text-base bg-red-600 hover:bg-red-700 text-white mt-2"
+                >
+                  Join Meeting
+                </Button>
+              </div>
+            </Card>
+          </FeatureGate>
         </div>
       </div>
     )
