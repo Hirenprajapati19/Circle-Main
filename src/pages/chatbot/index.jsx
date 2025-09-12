@@ -3,8 +3,12 @@ import { Bot, Send, Sparkles } from 'lucide-react'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import FeatureGate from '../../components/ui/FeatureGate'
+import CreditDisplay from '../../components/ui/CreditDisplay'
+import UpgradePopup from '../../components/ui/UpgradePopup'
+import { useAuth } from '../../store/useAuth'
 
 const ChatbotPage = () => {
+  const { deductCredits, getCredits, canUseCredits, isProUser } = useAuth()
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -14,6 +18,7 @@ const ChatbotPage = () => {
     }
   ])
   const [inputValue, setInputValue] = useState('')
+  const [showUpgradePopup, setShowUpgradePopup] = useState(false)
   const messagesEndRef = useRef(null)
 
   // ✅ Scroll to bottom function
@@ -23,6 +28,21 @@ const ChatbotPage = () => {
 
   const handleSendMessage = () => {
     if (!inputValue.trim()) return
+
+    // For free users, check credits
+    if (!isProUser()) {
+      if (getCredits() < 3) {
+        setShowUpgradePopup(true)
+        return
+      }
+
+      // Deduct credits for free users
+      const creditResult = deductCredits(3)
+      if (!creditResult.success) {
+        setShowUpgradePopup(true)
+        return
+      }
+    }
 
     const userMessage = {
       id: Date.now(),
@@ -57,12 +77,17 @@ const ChatbotPage = () => {
         
         {/* Header */}
         <div className="p-4 border-b border-gray-600 bg-black">
-          <h1 className="text-xl sm:text-2xl font-bold font-poppins text-white mb-1">
-            AI Assistant
-          </h1>
-          <p className="text-sm sm:text-base text-gray-400">
-            Get instant help and answers to your questions
-          </p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-xl sm:text-2xl font-bold font-poppins text-white mb-1">
+                AI Assistant
+              </h1>
+              <p className="text-sm sm:text-base text-gray-400">
+                Get instant help and answers to your questions
+              </p>
+            </div>
+            <CreditDisplay />
+          </div>
         </div>
 
         {/* Assistant Card */}
@@ -131,6 +156,15 @@ const ChatbotPage = () => {
           </div>
         </FeatureGate>
       </div>
+
+      {/* Upgrade Popup */}
+      <UpgradePopup
+        isOpen={showUpgradePopup}
+        onClose={() => setShowUpgradePopup(false)}
+        feature="chatbot"
+        creditsNeeded={3}
+        currentCredits={getCredits()}
+      />
     </div>
   )
 }

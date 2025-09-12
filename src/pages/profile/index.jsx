@@ -6,6 +6,7 @@ import Card from '../../components/layout/Card'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import Avatar from '../../components/ui/Avatar'
+import CreditDisplay from '../../components/ui/CreditDisplay'
 
 const ProfilePage = () => {
   const { user, updateUser, isProUser, resetToFree } = useAuth()
@@ -54,6 +55,7 @@ const ProfilePage = () => {
             <h1 className="text-xl sm:text-2xl font-bold font-poppins text-red-600 mb-2">Profile</h1>
             <p className="text-sm sm:text-base text-white">Manage your personal information</p>
           </div>
+          <CreditDisplay />
 
           {!isEditing ? (
             <Button
@@ -113,6 +115,15 @@ const ProfilePage = () => {
                   Upgrade to Pro
                 </Button>
               )}
+              {/* <Button
+                onClick={() => {
+                  const newUser = { ...user, credits: 30 }
+                  updateUser(newUser)
+                }}
+                className="text-xs bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                Reset Credits (Debug)
+              </Button> */}
             </div>
           </div>
 
