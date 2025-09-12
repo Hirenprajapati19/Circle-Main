@@ -6,10 +6,12 @@ import Input from '../../components/ui/Input'
 import { useMeetingStore } from '../../store/useMeeting'
 import Modal from '../../components/ui/Modal'
 import FeatureGate from '../../components/ui/FeatureGate'
+import CreditDisplay from '../../components/ui/CreditDisplay'
+import UpgradePopup from '../../components/ui/UpgradePopup'
 import { useAuth } from '../../store/useAuth'
 
 const MeetingPage = () => {
-  const { canUseFeature } = useAuth()
+  const { canUseFeature, deductCredits, getCredits, canUseCredits, isProUser } = useAuth()
   const { joinMeeting, scheduleMeeting, leaveMeeting, currentMeeting } = useMeetingStore()
   const [isInMeeting, setIsInMeeting] = useState(false)
   const [isMuted, setIsMuted] = useState(false)
@@ -23,6 +25,7 @@ const MeetingPage = () => {
   const [joinId, setJoinId] = useState('')
   const [joinPassword, setJoinPassword] = useState('')
   const [joinError, setJoinError] = useState('')
+  const [showUpgradePopup, setShowUpgradePopup] = useState(false)
 
   const participants = [
     { id: 1, name: 'John Doe', avatar: null, isMuted: false, isHost: true },
@@ -89,9 +92,12 @@ const MeetingPage = () => {
                 <Video className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
               </div>
               
-              <h1 className="text-xl sm:text-2xl font-bold font-poppins text-red-500 mb-3 sm:mb-4">
-                AR Meeting Room
-              </h1>
+              <div className="flex items-center justify-between mb-3 sm:mb-4">
+                <h1 className="text-xl sm:text-2xl font-bold font-poppins text-red-500">
+                  AR Meeting Room
+                </h1>
+                <CreditDisplay />
+              </div>
               
               <p className="text-sm sm:text-base text-gray-400 mb-6 sm:mb-8 px-4">
                 Join an immersive AR conference experience with spatial audio and virtual collaboration tools.
@@ -115,6 +121,21 @@ const MeetingPage = () => {
                 )}
                 <Button
                   onClick={() => {
+                    // For free users, check credits
+                    if (!isProUser()) {
+                      if (getCredits() < 20) {
+                        setShowUpgradePopup(true)
+                        return
+                      }
+
+                      // Deduct credits for free users
+                      const creditResult = deductCredits(20)
+                      if (!creditResult.success) {
+                        setShowUpgradePopup(true)
+                        return
+                      }
+                    }
+
                     const resp = joinMeeting({ id: joinId.trim(), password: joinPassword })
                     if (!resp.ok) {
                       setJoinError(resp.error)
@@ -124,12 +145,21 @@ const MeetingPage = () => {
                   }}
                   className="w-full text-sm sm:text-base bg-red-600 hover:bg-red-700 text-white mt-2"
                 >
-                  Join Meeting
+                  {isProUser() ? 'Join Meeting' : 'Join Meeting (20 Credits)'}
                 </Button>
               </div>
             </Card>
           </FeatureGate>
         </div>
+
+        {/* Upgrade Popup on join screen */}
+        <UpgradePopup
+          isOpen={showUpgradePopup}
+          onClose={() => setShowUpgradePopup(false)}
+          feature="meeting"
+          creditsNeeded={20}
+          currentCredits={getCredits()}
+        />
       </div>
     )
   }
@@ -296,6 +326,15 @@ const MeetingPage = () => {
         </div>
         <p className="text-xs text-gray-400 mt-3">Only your video tile background changes (like Instagram theme).</p>
       </Modal>
+
+      {/* Upgrade Popup */}
+      <UpgradePopup
+        isOpen={showUpgradePopup}
+        onClose={() => setShowUpgradePopup(false)}
+        feature="meeting"
+        creditsNeeded={20}
+        currentCredits={getCredits()}
+      />
 
     </div>
   )

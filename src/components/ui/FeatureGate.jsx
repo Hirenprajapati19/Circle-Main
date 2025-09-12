@@ -29,7 +29,7 @@ const FeatureGate = ({
       </div>
       <h3 className="text-lg font-semibold text-white mb-2">Pro Feature</h3>
       <p className="text-gray-400 text-sm mb-4">
-        This feature is available for Pro users only. Upgrade to unlock this functionality.
+        This feature is available for Pro users only. Upgrade to unlock unlimited access to all features.
       </p>
       {showUpgradeButton && (
         <Button
