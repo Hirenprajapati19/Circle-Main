@@ -33,13 +33,12 @@ const AppRoutes = () => {
 }
 
 function App() {
-  const location = useLocation()
-  const isChatbot = location.pathname.includes('/dashboard/chatbot')
   return (
     <AuthProvider>
       <UIProvider>
-        <div className={`min-h-screen ${isChatbot ? 'bg-black' : 'bg-gray-50'} w-full overflow-x-hidden`}>
+        <div className={`min-h-[100svh] bg-black w-full overflow-x-hidden`}>
           <AppRoutes />
+          <div className="fixed bottom-0 left-0 right-0 h-[env(safe-area-inset-bottom)] bg-black pointer-events-none" />
         </div>
       </UIProvider>
     </AuthProvider>
