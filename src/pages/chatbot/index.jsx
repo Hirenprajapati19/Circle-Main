@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Bot, Send, Sparkles } from 'lucide-react'
+import { ArrowLeft, Bot, Send, Sparkles } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import FeatureGate from '../../components/ui/FeatureGate'
@@ -9,6 +10,7 @@ import { useAuth } from '../../store/useAuth'
 
 const ChatbotPage = () => {
   const { deductCredits, getCredits, isProUser } = useAuth()
+  const navigate = useNavigate()
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -22,6 +24,7 @@ const ChatbotPage = () => {
   const [showUpgradePopup, setShowUpgradePopup] = useState(false)
   const [isTyping, setIsTyping] = useState(false) // typing indicator
   const messagesEndRef = useRef(null)
+  const [keyboardOffset, setKeyboardOffset] = useState(0)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -128,10 +131,34 @@ const ChatbotPage = () => {
     }
   }, [])
 
+  // handle mobile keyboard overlay using VisualViewport when available
+  useEffect(() => {
+    const vv = window.visualViewport
+    if (!vv) return
+    const updateOffset = () => {
+      const possibleOffset = Math.max(0, (window.innerHeight - vv.height) || 0)
+      setKeyboardOffset(possibleOffset)
+    }
+    updateOffset()
+    vv.addEventListener('resize', updateOffset)
+    vv.addEventListener('scroll', updateOffset)
+    return () => {
+      vv.removeEventListener('resize', updateOffset)
+      vv.removeEventListener('scroll', updateOffset)
+    }
+  }, [])
+
   return (
     <div className="flex flex-col h-[100svh] w-full bg-black text-white overflow-hidden">
       {/* Header */}
       <div className="flex-shrink-0 p-4 border-b border-gray-700 bg-black flex items-center justify-between gap-4">
+        <button
+          onClick={() => navigate(-1)}
+          className="sm:hidden p-2 rounded-lg bg-gray-800 border border-gray-700 text-white"
+          aria-label="Go back"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </button>
         <div className="w-12 h-12 bg-gray-600 rounded-xl flex items-center justify-center">
           <Bot className="w-6 h-6 text-white" />
         </div>
@@ -147,7 +174,10 @@ const ChatbotPage = () => {
       </div>
 
       {/* Messages */}
-      <div className="flex-1 min-h-0 overflow-y-auto thin-scroll p-4 sm:p-6 space-y-4 pb-24 bg-black">
+      <div
+        className="flex-1 min-h-0 overflow-y-auto thin-scroll p-4 sm:p-6 space-y-4 pb-24 bg-black"
+        style={{ paddingBottom: `calc(6rem + env(safe-area-inset-bottom) + ${keyboardOffset}px)` }}
+      >
         <FeatureGate feature="ai_features">
           {messages.map((message) => (
             <div
@@ -197,7 +227,10 @@ const ChatbotPage = () => {
       </div>
 
       {/* Input */}
-      <div className="flex-shrink-0 p-2 border-t border-gray-700 bg-black sticky bottom-0 z-10 pb-[env(safe-area-inset-bottom)]">
+      <div
+        className="flex-shrink-0 p-2 border-t border-gray-700 bg-black sticky bottom-0 z-10 pb-[env(safe-area-inset-bottom)]"
+        style={{ paddingBottom: `calc(env(safe-area-inset-bottom) + ${keyboardOffset}px)` }}
+      >
         <div className="flex items-center gap-3 bg-gray-900 border border-gray-700 rounded-xl px-3 py-2">
           <Input
             type="text"
