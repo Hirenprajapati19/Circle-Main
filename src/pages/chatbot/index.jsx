@@ -189,7 +189,7 @@ const ChatbotPage = () => {
               <div className="max-w-[75%] px-4 py-3 rounded-2xl bg-gray-800 text-gray-300 border border-gray-700 rounded-bl-none text-sm sm:text-base">
                 Circle AI is typing<span className="animate-pulse">...</span>
               </div>
-            </div>
+            </div>  
           )}
 
           <div ref={messagesEndRef} />
