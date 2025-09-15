@@ -20,6 +20,7 @@ const ChatbotPage = () => {
   ])
   const [inputValue, setInputValue] = useState('')
   const [showUpgradePopup, setShowUpgradePopup] = useState(false)
+  const [isTyping, setIsTyping] = useState(false) // typing indicator
   const messagesEndRef = useRef(null)
 
   const scrollToBottom = () => {
@@ -29,6 +30,7 @@ const ChatbotPage = () => {
   const handleSendMessage = async () => {
     if (!inputValue.trim()) return
 
+    // credit check
     if (!isProUser()) {
       if (getCredits() < 3) {
         setShowUpgradePopup(true)
@@ -41,6 +43,7 @@ const ChatbotPage = () => {
       }
     }
 
+    // add user message
     const userMessage = {
       id: Date.now(),
       type: 'user',
@@ -51,29 +54,56 @@ const ChatbotPage = () => {
     setMessages((prev) => [...prev, userMessage])
     setInputValue('')
 
+    // placeholder bot message to progressively fill
+    const botMessageId = Date.now() + 1
+    setMessages((prev) => [
+      ...prev,
+      { id: botMessageId, type: 'bot', content: '', timestamp: new Date() },
+    ])
+    setIsTyping(true)
+
     try {
-      const res = await fetch('http://localhost:5000/api/chat', {
+      const res = await fetch('http://localhost:5000/api/chat/stream', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: inputValue }),
       })
 
-      const data = await res.json()
+      if (!res.body) throw new Error("No response body")
 
-      const botMessage = {
-        id: Date.now() + 1,
-        type: 'bot',
-        content: data.reply,
-        timestamp: new Date(),
+      const reader = res.body.getReader()
+      const decoder = new TextDecoder("utf-8")
+
+      let partial = ""
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        const chunk = decoder.decode(value, { stream: true })
+        const lines = chunk.split("\n")
+
+        for (let line of lines) {
+          if (line.startsWith("data: ")) {
+            const word = line.replace("data: ", "").trim()
+            if (word === "[DONE]") {
+              setIsTyping(false)
+              return
+            }
+            partial += word + " "
+            setMessages((prev) =>
+              prev.map((msg) =>
+                msg.id === botMessageId ? { ...msg, content: partial } : msg
+              )
+            )
+          }
+        }
       }
-
-      setMessages((prev) => [...prev, botMessage])
     } catch (error) {
       console.error('Chat error:', error)
+      setIsTyping(false)
       setMessages((prev) => [
         ...prev,
         {
-          id: Date.now() + 1,
+          id: Date.now() + 2,
           type: 'bot',
           content: '⚠ Error connecting to AI server',
           timestamp: new Date(),
@@ -84,9 +114,9 @@ const ChatbotPage = () => {
 
   useEffect(() => {
     scrollToBottom()
-  }, [messages])
+  }, [messages, isTyping])
 
-  // Lock page scroll while chatbot is open
+  // lock scroll while open
   useEffect(() => {
     const prevHtmlOverflow = document.documentElement.style.overflow
     const prevBodyOverflow = document.body.style.overflow
@@ -100,7 +130,7 @@ const ChatbotPage = () => {
 
   return (
     <div className="flex flex-col h-[100dvh] w-full bg-black text-white overflow-hidden">
-      {/* Header - Fixed */}
+      {/* Header */}
       <div className="flex-shrink-0 p-4 border-b border-gray-700 bg-black flex items-center justify-between gap-4">
         <div className="w-12 h-12 bg-gray-600 rounded-xl flex items-center justify-center">
           <Bot className="w-6 h-6 text-white" />
@@ -116,7 +146,7 @@ const ChatbotPage = () => {
         <CreditDisplay />
       </div>
 
-      {/* Messages - Scrollable only */}
+      {/* Messages */}
       <div className="flex-1 min-h-0 overflow-y-auto thin-scroll p-4 sm:p-6 space-y-4 pb-24 bg-black">
         <FeatureGate feature="ai_features">
           {messages.map((message) => (
@@ -149,11 +179,24 @@ const ChatbotPage = () => {
               )}
             </div>
           ))}
+
+          {/* Typing indicator */}
+          {isTyping && (
+            <div className="flex items-start gap-3 justify-start">
+              <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-700">
+                <Bot className="w-5 h-5 text-white" />
+              </div>
+              <div className="max-w-[75%] px-4 py-3 rounded-2xl bg-gray-800 text-gray-300 border border-gray-700 rounded-bl-none text-sm sm:text-base">
+                Circle AI is typing<span className="animate-pulse">...</span>
+              </div>
+            </div>
+          )}
+
           <div ref={messagesEndRef} />
         </FeatureGate>
       </div>
 
-      {/* Input - Fixed Bottom */}
+      {/* Input */}
       <div className="flex-shrink-0 p-2 border-t border-gray-700 bg-black sticky bottom-0 z-10">
         <div className="flex items-center gap-3 bg-gray-900 border border-gray-700 rounded-xl px-3 py-2">
           <Input

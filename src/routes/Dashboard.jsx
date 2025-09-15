@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import Sidebar from '../components/layout/Sidebar'
 import Topbar from '../components/layout/Topbar'
 import ChatsPage from '../pages/chats'
@@ -15,6 +15,7 @@ import UpgradePage from '../pages/upgrade'
 import { useUI } from '../store/useUI'
 
 const Dashboard = () => {
+  const location = useLocation()
   const { isMobileView, setMobileView, mobileSidebarOpen, closeMobileSidebar } = useUI()
 
   // Check if screen is mobile size
@@ -43,7 +44,7 @@ const Dashboard = () => {
       )}
       
       <div className="flex-1 flex flex-col min-w-0 min-h-0 sm:pl-64">
-        <Topbar />
+        {!(location.pathname.includes('/dashboard/chatbot')) && <Topbar />}
         
         <main className="flex-1 overflow-y-auto overflow-x-hidden min-h-0">
           <Routes>
