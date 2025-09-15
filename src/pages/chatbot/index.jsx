@@ -129,7 +129,7 @@ const ChatbotPage = () => {
   }, [])
 
   return (
-    <div className="flex flex-col h-full w-full bg-black text-white overflow-hidden">
+    <div className="flex flex-col h-[100svh] w-full bg-black text-white overflow-hidden">
       {/* Header */}
       <div className="flex-shrink-0 p-4 border-b border-gray-700 bg-black flex items-center justify-between gap-4">
         <div className="w-12 h-12 bg-gray-600 rounded-xl flex items-center justify-center">
@@ -197,7 +197,7 @@ const ChatbotPage = () => {
       </div>
 
       {/* Input */}
-      <div className="flex-shrink-0 p-2 border-t border-gray-700 bg-black sticky bottom-0 z-10">
+      <div className="flex-shrink-0 p-2 border-t border-gray-700 bg-black sticky bottom-0 z-10 pb-[env(safe-area-inset-bottom)]">
         <div className="flex items-center gap-3 bg-gray-900 border border-gray-700 rounded-xl px-3 py-2">
           <Input
             type="text"
