@@ -32,7 +32,7 @@ const Dashboard = () => {
   }, [setMobileView])
 
   return (
-    <div className="flex h-screen bg-gray-50 overflow-x-hidden">
+    <div className="flex h-[100svh] bg-gray-50 overflow-x-hidden">
       <Sidebar />
       
       {/* Mobile Overlay */}
