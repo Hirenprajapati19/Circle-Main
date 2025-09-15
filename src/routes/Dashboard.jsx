@@ -63,6 +63,8 @@ const Dashboard = () => {
           </Routes>
         </main>
       </div>
+      {/* Safe-area filler to avoid bottom gap on mobile */}
+      <div className={`fixed bottom-0 left-0 right-0 h-[env(safe-area-inset-bottom)] ${isChatbot ? 'bg-black' : 'bg-gray-50'} sm:hidden pointer-events-none`} />
     </div>
   )
 }
