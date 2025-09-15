@@ -31,8 +31,9 @@ const Dashboard = () => {
     return () => window.removeEventListener('resize', checkMobileView)
   }, [setMobileView])
 
+  const isChatbot = location.pathname.includes('/dashboard/chatbot')
   return (
-    <div className="flex h-[100svh] bg-gray-50 overflow-x-hidden">
+    <div className={`flex h-[100svh] ${isChatbot ? 'bg-black' : 'bg-gray-50'} overflow-x-hidden`}>
       <Sidebar />
       
       {/* Mobile Overlay */}
