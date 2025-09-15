@@ -62,6 +62,15 @@
   .thin-scroll::-webkit-scrollbar-thumb:hover {
     background-color: rgba(59, 130, 246, 0.8);
   }
+
+  /* Hide scrollbar but keep scrolling */
+  .no-scrollbar {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
   
   .btn-primary {
     @apply bg-el-blue-500 hover:bg-el-blue-600 text-white px-6 py-3 rounded-2xl font-medium transition-all duration-200 hover:shadow-el-glow;
@@ -83,3 +92,4 @@
     @apply hover:shadow-el-glow transition-shadow duration-300;
   }
 }
+
