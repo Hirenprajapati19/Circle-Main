@@ -1,5 +1,5 @@
 import React from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import Landing from './routes/Landing'
 import Login from './routes/Login'
 import Signup from './routes/Signup'
@@ -33,10 +33,12 @@ const AppRoutes = () => {
 }
 
 function App() {
+  const location = useLocation()
+  const isChatbot = location.pathname.includes('/dashboard/chatbot')
   return (
     <AuthProvider>
       <UIProvider>
-        <div className="min-h-screen bg-gray-50 w-full overflow-x-hidden">
+        <div className={`min-h-screen ${isChatbot ? 'bg-black' : 'bg-gray-50'} w-full overflow-x-hidden`}>
           <AppRoutes />
         </div>
       </UIProvider>
