@@ -119,15 +119,27 @@ const ChatbotPage = () => {
     scrollToBottom()
   }, [messages, isTyping])
 
+  // ensure initial scroll after first paint
+  useEffect(() => {
+    const id = setTimeout(() => scrollToBottom(), 0)
+    return () => clearTimeout(id)
+  }, [])
+
   // lock scroll while open
   useEffect(() => {
     const prevHtmlOverflow = document.documentElement.style.overflow
     const prevBodyOverflow = document.body.style.overflow
+    const prevHtmlBg = document.documentElement.style.backgroundColor
+    const prevBodyBg = document.body.style.backgroundColor
     document.documentElement.style.overflow = 'hidden'
     document.body.style.overflow = 'hidden'
+    document.documentElement.style.backgroundColor = '#000'
+    document.body.style.backgroundColor = '#000'
     return () => {
       document.documentElement.style.overflow = prevHtmlOverflow
       document.body.style.overflow = prevBodyOverflow
+      document.documentElement.style.backgroundColor = prevHtmlBg
+      document.body.style.backgroundColor = prevBodyBg
     }
   }, [])
 
@@ -149,7 +161,7 @@ const ChatbotPage = () => {
   }, [])
 
   return (
-    <div className="flex flex-col h-[100svh] w-full bg-black text-white overflow-hidden">
+    <div className="fixed inset-0 sm:relative flex flex-col h-[100svh] w-full bg-black text-white overflow-hidden">
       {/* Header */}
       <div className="flex-shrink-0 p-4 border-b border-gray-700 bg-black flex items-center justify-between gap-4">
         <button
@@ -250,6 +262,9 @@ const ChatbotPage = () => {
           </Button>
         </div>
       </div>
+
+      {/* Safe-area background filler for mobile notch area */}
+      <div className="fixed bottom-0 left-0 right-0 h-[env(safe-area-inset-bottom)] bg-black sm:hidden pointer-events-none" />
 
       {/* Upgrade Popup */}
       <UpgradePopup
