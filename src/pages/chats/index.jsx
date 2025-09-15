@@ -44,7 +44,7 @@ const ChatsPage = () => {
 
   // Desktop view: show both side by side
   return (
-    <div className="h-full flex flex-col sm:flex-row">
+    <div className="h-full flex flex-col sm:flex-row min-h-screen">
       <div className="w-full sm:w-80 border-r border-gray-800 bg-white flex-shrink-0">
         <ChatList />
       </div>
