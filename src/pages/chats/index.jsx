@@ -32,7 +32,7 @@ const ChatsPage = () => {
 
   if (isMobileView) {
     return (
-      <div className="h-full">
+      <div className="h-full flex flex-col">
         {showChatWindow && selectedChat ? (
           <ChatWindow />
         ) : (
@@ -44,12 +44,12 @@ const ChatsPage = () => {
 
   // Desktop view: show both side by side
   return (
-    <div className="h-full flex flex-col sm:flex-row min-h-screen">
-      <div className="w-full sm:w-80 border-r border-gray-800 bg-white flex-shrink-0">
+    <div className="h-full flex flex-col sm:flex-row">
+      <div className="w-full sm:w-80 border-r border-gray-800 bg-black flex-shrink-0 h-full">
         <ChatList />
       </div>
       
-      <div className="flex-1 min-w-0">
+      <div className="flex-1 min-w-0 h-full">
         <Routes>
           <Route index element={
             <div className="h-full flex items-center justify-center bg-black text-gray-500 p-4">

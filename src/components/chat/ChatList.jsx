@@ -33,7 +33,7 @@ const ChatList = () => {
       </div>
 
       {/* Chat List */}
-      <div className="flex-1 overflow-y-auto thin-scroll bg-gray-950">
+      <div className="flex-1 overflow-y-auto thin-scroll bg-gray-950 min-h-0">
         <div className="p-2 sm:p-3 space-y-1">
           {mockChats.map((chat) => (
             <ChatItem key={chat.id} chat={chat} />
