@@ -43,7 +43,7 @@ function getInitials(name) {
   return (parts[0][0] + parts[1][0]).toUpperCase()
 }
 
-const GroupsList = () => {
+export const GroupsList = () => {
   const { user } = useAuth()
   const currentUserName = user?.name || user?.username || user?.email || 'me'
   const [groups, setGroups] = useState(() => loadGroups())
@@ -125,7 +125,7 @@ const GroupsList = () => {
   )
 }
 
-const GroupChat = () => {
+export const GroupChat = () => {
   const { groupId } = useParams()
   const [groups, setGroups] = useState(() => loadGroups())
   const group = useMemo(() => groups.find(g => g.id === groupId), [groups, groupId])

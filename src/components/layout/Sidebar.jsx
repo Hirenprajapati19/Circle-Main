@@ -22,7 +22,7 @@ const Sidebar = () => {
     { name: 'Meeting', href: '/dashboard/meeting', icon: Video },
     { name: 'Chatbot AI', href: '/dashboard/chatbot', icon: Bot },
     { name: 'Chats', href: '/dashboard/chats', icon: MessageCircle },
-    { name: 'Groups', href: '/dashboard/groups', icon: Users },
+    // { name: 'Groups', href: '/dashboard/groups', icon: Users },
     { name: 'Community', href: '/dashboard/community', icon: Users },
     { name: 'Channels', href: '/dashboard/channels', icon: Hash },
     { name: 'Status', href: '/dashboard/status', icon: Radio },
