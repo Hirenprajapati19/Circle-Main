@@ -6,6 +6,7 @@ import ChatsPage from '../pages/chats'
 import StatusPage from '../pages/status'
 import ChannelsPage from '../pages/channels'
 import CommunityPage from '../pages/community'
+import GroupsPage from '../pages/groups'
 import ChatbotPage from '../pages/chatbot'
 import MeetingPage from '../pages/meeting'
 import ProfilePage from '../pages/profile'
@@ -50,6 +51,7 @@ const Dashboard = () => {
           <Routes>
             <Route index element={<Navigate to="chats" replace />} />
             <Route path="chats/*" element={<ChatsPage />} />
+            <Route path="groups/*" element={<GroupsPage />} />
             <Route path="status" element={<StatusPage />} />
             <Route path="channels" element={<ChannelsPage />} />
             <Route path="community" element={<CommunityPage />} />

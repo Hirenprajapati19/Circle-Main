@@ -17,7 +17,8 @@ export const useMeetingStore = create((set, get) => ({
       title: title || 'Meeting',
       scheduledAt: scheduledAt || new Date().toISOString(),
       password: password || '',
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      participantCount: 0
     }
     set((state) => ({ scheduledMeetings: [meeting, ...state.scheduledMeetings] }))
     return meeting
@@ -35,11 +36,17 @@ export const useMeetingStore = create((set, get) => ({
       }
     }
 
-    set({ currentMeeting: { id, password } })
+    set({ currentMeeting: { id, password, participantCount: 1 } })
     return { ok: true }
   },
 
-  leaveMeeting: () => set({ currentMeeting: null })
+  leaveMeeting: () => set({ currentMeeting: null }),
+
+  setParticipantCount: (count) => {
+    const cm = get().currentMeeting
+    if (!cm) return
+    set({ currentMeeting: { ...cm, participantCount: Math.max(0, count | 0) } })
+  }
 }))
 
 

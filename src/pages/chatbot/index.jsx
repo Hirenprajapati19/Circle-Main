@@ -175,8 +175,8 @@ const ChatbotPage = () => {
           <Bot className="w-6 h-6 text-white" />
         </div>
         <div className="flex-1 min-w-0">
-          <h1 className="text-xl sm:text-2xl font-bold font-poppins text-white mb-1 truncate flex items-center gap-2">
-            AI Assistant <Sparkles className="w-4 h-4 text-yellow-500" />
+          <h1 className="text-xl sm:text-2xl font-bold font-poppins text-red-500 mb-1  truncate flex items-center gap-2">
+           Circle AI Assistant <Sparkles className="w-4 h-4 text-yellow-500" />
           </h1>
           <p className="text-sm sm:text-base text-gray-400 truncate">
             Get instant help and answers to your questions
