@@ -67,6 +67,13 @@ const UpgradePage = () => {
   const [paypalEmail, setPaypalEmail] = useState('')
   const [errors, setErrors] = useState({})
   const [showSuccess, setShowSuccess] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  // Trigger entrance animations on mount
+  useEffect(() => {
+    const t = setTimeout(() => setMounted(true), 50)
+    return () => clearTimeout(t)
+  }, [])
 
   const priceDisplay = useMemo(() => {
     const planKey = basePrices[selectedPlan] ? selectedPlan : 'Pro'
@@ -252,21 +259,56 @@ const UpgradePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white p-4 sm:p-8">
-      <div className="max-w-6xl mx-auto space-y-8">
+    <div className="relative overflow-hidden min-h-screen bg-black text-white p-4 sm:p-8">
+      {/* Animated background */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-30"
+        style={{
+          backgroundImage:
+            'radial-gradient(circle at 25% 10%, rgba(239,68,68,0.08), transparent 40%), radial-gradient(circle at 80% 30%, rgba(168,85,247,0.06), transparent 40%)'
+        }}
+      />
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage:
+            'repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 40px), repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 40px)'
+        }}
+      />
+      {/* Floating blurred blobs */}
+      <div className="pointer-events-none absolute -top-16 -left-24 w-80 h-80 bg-red-600/25 blur-3xl rounded-full animate-blob" />
+      <div className="pointer-events-none absolute bottom-[-60px] right-[-60px] w-96 h-96 bg-purple-600/20 blur-3xl rounded-full animate-blob2" />
+
+      <div className="relative max-w-6xl mx-auto space-y-8">
         <header className="text-center">
-          <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 rounded-2xl bg-red-600 flex items-center justify-center shadow-[0_0_40px_rgba(239,68,68,0.35)]">
+          <div
+            className={`w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 rounded-2xl bg-red-600 flex items-center justify-center shadow-[0_0_40px_rgba(239,68,68,0.35)] transform transition-all duration-700 ${mounted ? 'opacity-100 scale-100' : 'opacity-0 scale-75'} float-gentle`}
+          >
             <Sparkles className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
           </div>
-          <h1 className="text-2xl sm:text-4xl font-bold font-poppins text-red-500">Upgrade to Pro</h1>
-          <p className="mt-2 text-gray-400 max-w-2xl mx-auto text-sm sm:text-base">Unlock powerful features crafted for speed, security, and productivity—beautifully integrated with your current Circle workspace.</p>
+          <h1
+            className={`text-2xl sm:text-4xl font-bold font-poppins text-red-500 transform transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`}
+            style={{ transitionDelay: mounted ? '100ms' : '0ms' }}
+          >
+            Upgrade to Pro
+          </h1>
+          <p
+            className={`mt-2 text-gray-400 max-w-2xl mx-auto text-sm sm:text-base transform transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`}
+            style={{ transitionDelay: mounted ? '180ms' : '0ms' }}
+          >
+            Unlock powerful features crafted for speed, security, and productivity—beautifully integrated with your current Circle workspace.
+          </p>
         </header>
 
         <section className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-          {features.map(({ icon: Icon, title, desc }) => (
-            <Card key={title} className="bg-gray-950 border border-red-600/60 p-5 sm:p-6">
+          {features.map(({ icon: Icon, title, desc }, idx) => (
+            <Card
+              key={title}
+              className={`group bg-gray-950/90 backdrop-blur-sm border border-red-600/60 p-5 sm:p-6 transform transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'} hover:translate-y-[-2px] hover:shadow-[0_0_30px_rgba(239,68,68,0.25)]`}
+              style={{ transitionDelay: mounted ? `${220 + idx * 100}ms` : '0ms' }}
+            >
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-red-600/20 border border-red-600/40 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-red-600/20 border border-red-600/40 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
                   <Icon className="w-5 h-5 text-red-500" />
                 </div>
                 <div>
@@ -280,15 +322,19 @@ const UpgradePage = () => {
 
         <section>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-            {plans.map((plan) => (
+            {plans.map((plan, idx) => (
               <Card
                 key={plan.name}
-                className={`p-5 sm:p-6 border ${
+                className={`group p-5 sm:p-6 border transform transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'} hover:translate-y-[-3px] hover:shadow-[0_0_40px_rgba(239,68,68,0.25)] ${
                   plan.highlight
-                    ? 'bg-gradient-to-b from-red-950 via-black to-black border-red-600 shadow-[0_0_50px_rgba(239,68,68,0.25)]'
+                    ? 'relative overflow-hidden bg-gradient-to-b from-red-950 via-black to-black border-red-600 shadow-[0_0_50px_rgba(239,68,68,0.25)]'
                     : 'bg-gray-950 border-red-600/50'
                 }`}
+                style={{ transitionDelay: mounted ? `${200 + idx * 120}ms` : '0ms' }}
               >
+                {plan.highlight && (
+                  <div className="pointer-events-none absolute -inset-0.5 rounded-xl opacity-20 bg-[radial-gradient(120px_60px_at_10%_-20%,rgba(255,255,255,0.6),transparent),radial-gradient(120px_60px_at_90%_120%,rgba(255,255,255,0.5),transparent)] animate-glow" />
+                )}
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="text-lg sm:text-xl font-semibold text-white flex items-center gap-2">
@@ -310,11 +356,14 @@ const UpgradePage = () => {
                   ))}
                 </ul>
                 <Button
-                  className={`w-full mt-5 text-sm ${plan.highlight ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-gray-800 hover:bg-gray-700 text-white'}`}
+                  className={`relative overflow-hidden w-full mt-5 text-sm ${plan.highlight ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-gray-800 hover:bg-gray-700 text-white'}`}
                   disabled={plan.name === 'Starter'}
                   onClick={() => { if (plan.name !== 'Starter') { setSelectedPlan(plan.name); setIsOpen(true) } }}
                 >
-                  {plan.cta}
+                  <span className="relative z-10">{plan.cta}</span>
+                  {plan.highlight && (
+                    <span className="pointer-events-none absolute inset-0 translate-x-[-120%] bg-gradient-to-r from-transparent via-white/35 to-transparent skew-x-12 animate-shine" />
+                  )}
                 </Button>
               </Card>
             ))}
@@ -328,7 +377,7 @@ const UpgradePage = () => {
 
       {/* Upgrade Modal */}
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title={`Upgrade to ${selectedPlan}`} size="xl">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
           <div>
             <div className="flex items-center gap-2 mb-3 sm:mb-4">
               <span className="text-gray-400 text-sm">Billing:</span>
@@ -480,6 +529,19 @@ const UpgradePage = () => {
           </div>
         </div>
       </Modal>
+      {/* Page-local animations */}
+      <style>{`
+        @keyframes floatGentle { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(-6px) } }
+        .float-gentle { animation: floatGentle 6s ease-in-out infinite }
+        @keyframes blobMove { 0%, 100% { transform: translate(0,0) scale(1)} 50% { transform: translate(20px, -10px) scale(1.05)} }
+        .animate-blob { animation: blobMove 16s ease-in-out infinite }
+        @keyframes blobMove2 { 0%, 100% { transform: translate(0,0) scale(1)} 50% { transform: translate(-20px, 10px) scale(1.06)} }
+        .animate-blob2 { animation: blobMove2 18s ease-in-out infinite }
+        @keyframes glowPulse { 0%, 100% { opacity: .18 } 50% { opacity: .35 } }
+        .animate-glow { animation: glowPulse 3s ease-in-out infinite }
+        @keyframes shine { 0% { transform: translateX(-120%) skewX(12deg) } 100% { transform: translateX(120%) skewX(12deg) } }
+        .animate-shine { animation: shine 1.8s ease-in-out infinite }
+      `}</style>
     </div>
   )
 }

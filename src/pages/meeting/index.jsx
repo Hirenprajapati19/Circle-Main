@@ -60,6 +60,8 @@ const MeetingPage = () => {
   const [chatInput, setChatInput] = useState('')
   const [unreadCount, setUnreadCount] = useState(0)
   const lastSenderRef = React.useRef(messages[messages.length - 1]?.sender || null)
+  const desktopChatRef = useRef(null)
+  const mobileChatRef = useRef(null)
 
   const sendMessage = () => {
     const text = chatInput.trim()
@@ -82,6 +84,16 @@ const MeetingPage = () => {
       }
     }
   }, [messages, isMobile, showMobileChat])
+
+  // Auto-scroll chat to the latest message (desktop + mobile)
+  useEffect(() => {
+    if (desktopChatRef.current) {
+      desktopChatRef.current.scrollTop = desktopChatRef.current.scrollHeight
+    }
+    if (showMobileChat && mobileChatRef.current) {
+      mobileChatRef.current.scrollTop = mobileChatRef.current.scrollHeight
+    }
+  }, [messages, showMobileChat])
 
   const bgClasses = bgMode === 'dark'
     ? 'bg-black'
@@ -440,29 +452,47 @@ const MeetingPage = () => {
       </div>
 
       {/* Video Grid */}
-      <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 p-3 sm:p-6 overflow-hidden">
-        <Card className={`${myTileBgClasses} border border-red-600 flex items-center justify-center transition-all duration-300 min-h-[200px] sm:min-h-[300px]`}>
+      <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 p-3 sm:p-4 overflow-hidden">
+        <Card className={`${myTileBgClasses} border border-red-600 flex items-center justify-center transition-all duration-300 min-h-[64px] sm:min-h-[72px]`}>
           <div className="text-center text-white">
-            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-4">
-              <Video className="w-6 h-6 sm:w-8 sm:h-8 text-red-500" />
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-1 sm:mb-2">
+              <Video className="w-5 h-5 sm:w-6 sm:h-6 text-red-500" />
             </div>
-            <p className="text-sm sm:text-lg font-medium">Your Video</p>
+            <p className="text-xs sm:text-sm font-medium">Your Video</p>
           </div>
         </Card>
 
         {participants.slice(0, Math.min(3, planLimit - 1)).map((participant) => (
-          <Card key={participant.id} className="bg-gray-900 border border-red-600 flex items-center justify-center min-h-[200px] sm:min-h-[300px]">
+          <Card key={participant.id} className="bg-gray-900 border border-red-600 flex items-center justify-center min-h-[64px] sm:min-h-[72px]">
             <div className="text-center text-white">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-2">
-                <Users className="w-5 h-5 sm:w-6 sm:h-6 text-red-500" />
+              <div className="w-8 h-8 sm:w-9 sm:h-9 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-1">
+                <Users className="w-4 h-4 sm:w-5 sm:h-5 text-red-500" />
               </div>
-              <p className="font-medium text-sm sm:text-base">{participant.name}</p>
+              <p className="font-medium text-xs sm:text-sm">{participant.name}</p>
               {participant.isMuted && (
-                <MicOff className="w-3 h-3 sm:w-4 sm:h-4 text-red-400 mx-auto mt-1 sm:mt-2" />
+                <MicOff className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-red-400 mx-auto mt-1 sm:mt-1" />
               )}
             </div>
           </Card>
         ))}
+
+        {/* Extra placeholder tiles */}
+        <Card className="bg-gray-900 border border-red-600 flex items-center justify-center min-h-[64px] sm:min-h-[72px]">
+          <div className="text-center text-white">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-1">
+              <Users className="w-4 h-4 sm:w-5 sm:h-5 text-red-500" />
+            </div>
+            <p className="font-medium text-xs sm:text-sm">Guest</p>
+          </div>
+        </Card>
+        <Card className="bg-gray-900 border border-red-600 flex items-center justify-center min-h-[64px] sm:min-h-[72px]">
+          <div className="text-center text-white">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-1">
+              <Users className="w-4 h-4 sm:w-5 sm:h-5 text-red-500" />
+            </div>
+            <p className="font-medium text-xs sm:text-sm">Guest</p>
+          </div>
+        </Card>
       </div>
 
       {/* Chat Sidebar */}
@@ -472,7 +502,7 @@ const MeetingPage = () => {
             <MessageSquare className="w-4 h-4" />
             <span className="font-medium">Chat</span>
           </div>
-          <div className="flex-1 overflow-y-auto p-3 space-y-3 scrollbar-hide">
+          <div ref={desktopChatRef} className="flex-1 overflow-y-auto p-3 space-y-3 scrollbar-hide">
             {messages.map((msg) => (
               <div key={msg.id} className="text-sm break-words">
                 <span className="font-semibold text-red-400">{msg.sender}: </span>
@@ -639,7 +669,7 @@ const MeetingPage = () => {
       {/* Mobile Chat Modal */}
       <Modal isOpen={showMobileChat} onClose={() => { setShowMobileChat(false); setUnreadCount(0); }} title="Chat">
         <div className="flex flex-col h-96">
-          <div className="flex-1 overflow-y-auto space-y-3 scrollbar-hide">
+          <div ref={mobileChatRef} className="flex-1 overflow-y-auto space-y-3 scrollbar-hide">
             {messages.map((msg) => (
               <div key={msg.id} className="text-sm break-words">
                 <span className="font-semibold text-red-400">{msg.sender}: </span>
