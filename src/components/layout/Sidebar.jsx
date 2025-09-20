@@ -18,6 +18,7 @@ const Sidebar = () => {
   const { isMobileView, mobileSidebarOpen, closeMobileSidebar } = useUI()
   
   const navigation = [
+    { name: 'Dashboard', href: '/dashboard', icon: Circle },
     { name: 'Schedule', href: '/dashboard/schedule', icon: Calendar },
     { name: 'Meeting', href: '/dashboard/meeting', icon: Video },
     { name: 'Chatbot AI', href: '/dashboard/chatbot', icon: Bot },
