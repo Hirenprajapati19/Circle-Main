@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import Sidebar from '../components/layout/Sidebar'
 import Topbar from '../components/layout/Topbar'
+import DashboardPage from '../pages/dashboard'
 import ChatsPage from '../pages/chats'
 import StatusPage from '../pages/status'
 import ChannelsPage from '../pages/channels'
@@ -49,7 +50,7 @@ const Dashboard = () => {
         
         <main className="flex-1 overflow-y-auto overflow-x-hidden min-h-0">
           <Routes>
-            <Route index element={<Navigate to="chats" replace />} />
+            <Route index element={<DashboardPage />} />
             <Route path="chats/*" element={<ChatsPage />} />
             <Route path="groups/*" element={<GroupsPage />} />
             <Route path="status" element={<StatusPage />} />
@@ -61,6 +62,7 @@ const Dashboard = () => {
             <Route path="settings" element={<SettingsPage />} />
             <Route path="schedule/*" element={<SchedulePage />} />
             <Route path="upgrade" element={<UpgradePage />} />
+            {/* <Route index element={<Navigate to="chats" replace />} /> */}
           </Routes>
         </main>
       </div>
