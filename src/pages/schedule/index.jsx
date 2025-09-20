@@ -5,6 +5,7 @@ import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import CalendarComponent from '../../components/ui/Calendar'
 import Modal from '../../components/ui/Modal'
+import { useMeetingStore } from '../../store/useMeeting'
 
 const SchedulePage = () => {
   const [step, setStep] = useState('calendar')
@@ -17,7 +18,7 @@ const SchedulePage = () => {
   })
   const [meetingPassword, setMeetingPassword] = useState('')
 
-  const [scheduledMeetings, setScheduledMeetings] = useState([])
+  const { scheduledMeetings, scheduleMeeting } = useMeetingStore()
   const [viewMeeting, setViewMeeting] = useState(null)
   const [scheduledMeeting, setScheduledMeeting] = useState(null)
   const [showCongrats, setShowCongrats] = useState(false)
@@ -36,13 +37,6 @@ const SchedulePage = () => {
     '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
     '14:00', '14:30', '15:00', '15:30', '16:00', '16:30'
   ]
-
-  const scheduleMeeting = ({ title, scheduledAt, password }) => {
-    const id = Math.random().toString(36).slice(2, 10).toUpperCase()
-    const newMeeting = { id, title, scheduledAt, password }
-    setScheduledMeetings(prev => [newMeeting, ...prev])
-    return newMeeting
-  }
 
   // ========== STEP 1 : Calendar ==========
   if (step === 'calendar') {
@@ -189,7 +183,7 @@ const SchedulePage = () => {
                   placeholder="Meeting description (optional)"
                   value={meetingDetails.description}
                   onChange={(e) => setMeetingDetails(prev => ({ ...prev, description: e.target.value }))}
-                  className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-red-600 focus:ring-2 focus:ring-red-600/20 outline-none resize-none text-sm"
+                  className="w-full px-3 py-2 bg-black text-white rounded-lg border border-gray-300 focus:border-red-600 focus:ring-2 focus:ring-red-600/20 outline-none resize-none text-sm"
                   rows={3}
                 />
               </div>
