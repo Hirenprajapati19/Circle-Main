@@ -177,7 +177,7 @@ const Landing = () => {
                 }}
                 transition={{ duration: 3, repeat: Infinity }}
               >
-                CIRCLE
+                CIRCLEN
               </motion.h1>
             </motion.div>
             
