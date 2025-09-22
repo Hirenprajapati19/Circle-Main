@@ -92,7 +92,7 @@ const Landing = () => {
       <div
         className="fixed inset-0 z-0 opacity-20 mt-8"
         style={{
-          backgroundImage: `url('/CIRCLE.png')`,
+          backgroundImage: `url('/pic/CIRCLE.png')`,
           backgroundSize: 'contain',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'
