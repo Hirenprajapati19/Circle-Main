@@ -1,8 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { 
-  MessageCircle, 
-  Circle,
+  MessageCircle,
   Radio,
   Hash,
   Users,
@@ -18,7 +17,7 @@ const Sidebar = () => {
   const { isMobileView, mobileSidebarOpen, closeMobileSidebar } = useUI()
   
   const navigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: Circle },
+    { name: 'Dashboard', href: '/dashboard', icon: null },
     { name: 'Schedule', href: '/dashboard/schedule', icon: Calendar },
     { name: 'Meeting', href: '/dashboard/meeting', icon: Video },
     { name: 'Chatbot AI', href: '/dashboard/chatbot', icon: Bot },
@@ -53,10 +52,12 @@ const Sidebar = () => {
     <div className={getSidebarClasses()}>
       {/* Logo */}
       <div className="p-2 sm:p-5 border-b border-gray-800">
-        <div className="flex items-center gap-2 sm:gap-3">
-          <div className="w-5 h-5 sm:w-8 sm:h-8 bg-red-600 rounded-full flex items-center justify-center shadow-md shadow-red-600/40">
-            <Circle className="w-3 h-3 sm:w-5 sm:h-5 text-white" />
-          </div>
+        <div className="flex items-center gap-2 sm:gap-1">
+          <img
+            src="/circle-logo.png"
+            alt="Circle Logo"
+            className="w-7 h-7 sm:w-10 sm:h-10 rounded-full"
+          />
           <span className="text-sm sm:text-xl font-bold font-poppins text-white">
             Circle
           </span>
@@ -80,7 +81,15 @@ const Sidebar = () => {
                 }
                 title={item.name}
               >
-                <item.icon className="w-3 h-3 sm:w-5 sm:h-5 flex-shrink-0" />
+                {item.name === 'Dashboard' ? (
+                  <img
+                    src="/circle-logo.png"
+                    alt="Dashboard"
+                    className="w-3 h-3 sm:w-5 sm:h-5 flex-shrink-0"
+                  />
+                ) : (
+                  <item.icon className="w-3 h-3 sm:w-5 sm:h-5 flex-shrink-0" />
+                )}
                 <span className="font-medium text-xs sm:text-base">{item.name}</span>
               </NavLink>
             </li>

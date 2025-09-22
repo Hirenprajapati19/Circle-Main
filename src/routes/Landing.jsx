@@ -88,75 +88,144 @@ const Landing = () => {
     <motion.div
       className="min-h-screen relative overflow-hidden bg-gradient-to-br from-[#0a0a0a] via-black to-[#140000] text-white"
     >
-      {/* Scroll progress bar */}
+      {/* Fixed Background Image */}
+      <div
+        className="fixed inset-0 z-0 opacity-20 mt-8"
+        style={{
+          backgroundImage: `url('/CIRCLE.png')`,
+          backgroundSize: 'contain',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      />
+
+      {/* Red Circle Logo Overlay */}
+      {/* <div className="fixed inset-0 z-0 flex items-center justify-center pointer-events-none">
+        <img
+          src="/Circle-logo-red.png"
+          alt="Circle Red Logo Overlay"
+          className="w-48 h-48 sm:w-[300px] sm:h-[300px] lg:w-[400px] lg:h-[400px] opacity-10 object-contain"
+        />
+      </div> */}
+
+      {/* Additional Logo Overlay */}
+      {/* <div className="fixed inset-0 z-0 flex items-center justify-center pointer-events-none">
+        <img
+          src="/circle-logo.png"
+          alt="Circle Logo Overlay"
+          className="w-48 h-48 sm:w-[300px] sm:h-[300px] lg:w-[400px] lg:h-[400px] opacity-10 object-contain animate-pulse"
+        />
+      </div> */}
+       
       <div className="fixed top-0 left-0 right-0 z-50">
         <div className="h-1.5 bg-red-600/15">
           <motion.div style={{ scaleX }} className="origin-left h-full bg-gradient-to-r from-red-600 to-red-800" />
         </div>
       </div>
+      
       {/* Enhanced Animated Background */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-red-600/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-red-800/20 rounded-full blur-3xl animate-ping"></div>
-        <div className="absolute top-1/2 left-1/2 w-[300px] h-[300px] bg-red-900/10 rounded-full blur-3xl animate-bounce"></div>
-        {/* Thematic gradient overlays */}
+        <div className="absolute top-0 left-0 w-[800px] h-[800px] bg-red-600/25 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-0 right-0 w-[700px] h-[700px] bg-red-800/25 rounded-full blur-3xl animate-ping"></div>
+        <div className="absolute top-1/2 left-1/2 w-[400px] h-[400px] bg-red-900/15 rounded-full blur-3xl animate-bounce"></div>
+        <div className="absolute top-1/4 right-1/4 w-[300px] h-[300px] bg-pink-600/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 left-1/4 w-[350px] h-[350px] bg-orange-600/20 rounded-full blur-3xl animate-ping"></div>
+
+        {/* Enhanced gradient overlays */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-tr from-red-950/30 via-transparent to-red-900/20" />
+          <div className="absolute inset-0 bg-gradient-to-tr from-red-950/40 via-transparent to-red-900/30" />
+          <div className="absolute inset-0 bg-gradient-to-bl from-pink-950/30 via-transparent to-orange-900/20" />
           <div
             className="absolute inset-0"
             style={{
               background:
-                'radial-gradient(600px at 20% 15%, rgba(239,68,68,0.12), transparent 60%), radial-gradient(700px at 75% 80%, rgba(127,29,29,0.10), transparent 60%)',
+                'radial-gradient(800px at 15% 20%, rgba(239,68,68,0.18), transparent 70%), radial-gradient(900px at 80% 75%, rgba(127,29,29,0.15), transparent 70%), radial-gradient(600px at 40% 40%, rgba(236,72,153,0.12), transparent 60%)',
             }}
           />
           <motion.div
-            className="absolute -inset-x-1 top-1/4 h-64 bg-gradient-to-r from-transparent via-red-700/10 to-transparent blur-3xl"
-            animate={{ x: ['-20%', '120%'] }}
-            transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
+            className="absolute -inset-x-1 top-1/4 h-80 bg-gradient-to-r from-transparent via-red-700/15 to-transparent blur-3xl"
+            animate={{ x: ['-30%', '130%'] }}
+            transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+          />
+          <motion.div
+            className="absolute -inset-x-1 bottom-1/4 h-64 bg-gradient-to-r from-transparent via-pink-600/10 to-transparent blur-3xl"
+            animate={{ x: ['130%', '-30%'] }}
+            transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
           />
         </div>
-        {/* Subtle grid overlay */}
-        <div className="absolute inset-0 opacity-[0.06] pointer-events-none">
+
+        {/* Enhanced grid overlay */}
+        <div className="absolute inset-0 opacity-[0.08] pointer-events-none">
           <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5" />
+              <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+                <path d="M 50 0 L 0 0 0 50" fill="none" stroke="currentColor" strokeWidth="0.8" />
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#grid)" className="text-white" />
           </svg>
         </div>
-        {/* Floating particles */}
+
+        {/* Enhanced floating particles */}
         {[
-          { top: '12%', left: '8%' }, { top: '22%', left: '30%' }, { top: '18%', left: '70%' },
-          { top: '35%', left: '15%' }, { top: '42%', left: '55%' }, { top: '30%', left: '85%' },
-          { top: '62%', left: '10%' }, { top: '58%', left: '38%' }, { top: '66%', left: '72%' },
-          { top: '78%', left: '22%' }, { top: '80%', left: '48%' }, { top: '74%', left: '88%' },
+          { top: '8%', left: '5%', color: 'bg-red-500', size: 'w-2 h-2' },
+          { top: '15%', left: '25%', color: 'bg-pink-500', size: 'w-1.5 h-1.5' },
+          { top: '12%', left: '65%', color: 'bg-red-600', size: 'w-2.5 h-2.5' },
+          { top: '28%', left: '12%', color: 'bg-orange-500', size: 'w-1 h-1' },
+          { top: '35%', left: '50%', color: 'bg-red-500', size: 'w-2 h-2' },
+          { top: '25%', left: '82%', color: 'bg-pink-600', size: 'w-1.5 h-1.5' },
+          { top: '55%', left: '8%', color: 'bg-red-600', size: 'w-2 h-2' },
+          { top: '48%', left: '35%', color: 'bg-orange-500', size: 'w-1.5 h-1.5' },
+          { top: '58%', left: '68%', color: 'bg-red-500', size: 'w-2.5 h-2.5' },
+          { top: '72%', left: '18%', color: 'bg-pink-500', size: 'w-1 h-1' },
+          { top: '75%', left: '45%', color: 'bg-red-600', size: 'w-2 h-2' },
+          { top: '68%', left: '85%', color: 'bg-orange-500', size: 'w-1.5 h-1.5' },
+          { top: '85%', left: '30%', color: 'bg-pink-600', size: 'w-2 h-2' },
+          { top: '88%', left: '60%', color: 'bg-red-500', size: 'w-1.5 h-1.5' },
         ].map((p, i) => (
           <motion.span
             key={i}
-            className="absolute w-1.5 h-1.5 bg-red-500 rounded-full"
+            className={`absolute ${p.color} ${p.size} rounded-full`}
             style={{ top: p.top, left: p.left }}
-            animate={{ y: [0, -10, 0], opacity: [0.8, 1, 0.8] }}
-            transition={{ duration: 3.5 + (i % 3), repeat: Infinity, delay: i * 0.2, ease: 'easeInOut' }}
+            animate={{ y: [0, -15, 0], opacity: [0.6, 1, 0.6], scale: [1, 1.2, 1] }}
+            transition={{ duration: 4 + (i % 4), repeat: Infinity, delay: i * 0.15, ease: 'easeInOut' }}
           />
         ))}
-        
-        {/* Mouse follower effect */}
+
+        {/* Interactive glow effect */}
         <motion.div
-          className="absolute w-96 h-96 bg-red-500/5 rounded-full blur-3xl pointer-events-none"
+          className="absolute w-[600px] h-[600px] bg-gradient-radial from-red-500/8 via-transparent to-transparent rounded-full blur-3xl pointer-events-none"
           animate={{
-            x: mousePosition.x - 192,
-            y: mousePosition.y - 192,
+            x: mousePosition.x - 300,
+            y: mousePosition.y - 300,
           }}
-          transition={{ type: "spring", damping: 30, stiffness: 200 }}
+          transition={{ type: "spring", damping: 25, stiffness: 150 }}
+        />
+
+        {/* Additional animated elements */}
+        <motion.div
+          className="absolute top-1/3 right-1/5 w-[200px] h-[200px] bg-pink-600/10 rounded-full blur-2xl"
+          animate={{
+            scale: [1, 1.2, 1],
+            rotate: [0, 180, 360],
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
+        />
+
+        <motion.div
+          className="absolute bottom-1/3 left-1/5 w-[250px] h-[250px] bg-orange-600/10 rounded-full blur-2xl"
+          animate={{
+            scale: [1.2, 1, 1.2],
+            rotate: [360, 180, 0],
+          }}
+          transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
         />
       </div>
 
       <Header />
-      
+
       {/* Hero Section */}
-      <main className="relative">
+      <main className="relative z-10">
         <section className="container mx-auto px-6 pt-32 pb-20">
           <motion.div 
             className="text-center max-w-6xl mx-auto"

@@ -33,7 +33,7 @@ const MeetingPage = () => {
   const emojiPickerRef = useRef(null)
   const [reactions, setReactions] = useState([]);
   const [showWhiteboard, setShowWhiteboard] = useState(false);
-  const [penColor, setPenColor] = useState('#ffffff');
+  const [penColor, setPenColor] = useState('#000000');
   const [penSize, setPenSize] = useState(5);
   const [isDrawing, setIsDrawing] = useState(false);
   const canvasRef = useRef(null);
@@ -826,7 +826,7 @@ const MeetingPage = () => {
           </div>
 
           {/* Canvas */}
-          <div className="flex-1 w-full h-full bg-gray-700 overflow-hidden relative">
+          <div className="flex-1 w-full h-full bg-white overflow-hidden relative">
             <canvas
               ref={canvasRef}
               className="w-full h-full cursor-crosshair absolute inset-0"
